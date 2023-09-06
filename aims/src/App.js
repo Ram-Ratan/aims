@@ -3,7 +3,7 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      aims shuru ho gya
+      <h1>AIMS Portal</h1>
     </div>
   );
 }
