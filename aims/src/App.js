@@ -1,11 +1,24 @@
 import './App.css';
+import { BrowserRouter as Router,Routes,Route} from 'react-router-dom';
+import Navbar from './components/Navbar/Navbar';
+import Header from './components/Header/Header';
+import About from './Pages/About';
+import PersonalDetails from './Pages/PersonalDetails';
+import Grade from './Pages/Grade';
 
 function App() {
   return (
-    <div className="App ">
-      <h1 className='font-bold'>this is ram/header branch</h1>
-      <h1>AIMS Portal ram change kiya</h1>
-    </div>
+    <Router>
+      <Header />
+      <Navbar />
+      <Routes>
+        <Route path='/about' Component={About} />
+        <Route path='/personal-details' Component={PersonalDetails} />
+        <Route path='/grade' Component={Grade} />
+      </Routes>
+
+    </Router>
+    
   );
 }
 
