@@ -1,7 +1,9 @@
 .active{
     font-weight: bolder;
     color: white;
-    background: linear-gradient(to left, #d58a8a, #1010cd);
+    background: linear-gradient(90deg,
+        #ff1f71 0%,
+        #ff7700 100%);
     /* border-right: solid 3px #ef8236; */
-    border-radius: 5px;
+    border-radius: 6px;
 }

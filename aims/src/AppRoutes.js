@@ -1,0 +1,22 @@
+import React from 'react'
+import Layouts from './layouts/Layouts';
+import { Route, Routes} from "react-router-dom";
+import About from "./Pages/About";
+import Grade from "./Pages/Grade";
+import PersonalDetails from './Pages/PersonalDetails';
+import Home from './Pages/Home';
+const AppRoutes = () => {
+  return (
+    <Layouts>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/personal-details" element={<PersonalDetails/>} />
+        <Route path="/grade" element={<Grade />} />
+        {/* Add more routes for other pages */}
+      </Routes>
+    </Layouts>
+  );
+}
+
+export default AppRoutes;
