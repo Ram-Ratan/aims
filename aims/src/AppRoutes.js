@@ -5,13 +5,15 @@ import About from "./Pages/About";
 import Grade from "./Pages/Grade";
 import PersonalDetails from './Pages/PersonalDetails';
 import Home from './Pages/Home';
+import Auth from './Pages/auth/Auth';
 const AppRoutes = () => {
   return (
     <Layouts>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/personal-details" element={<PersonalDetails/>} />
+        <Route path="/login" element={<Auth />} />
+        <Route path="/personal-details" element={<PersonalDetails />} />
         <Route path="/grade" element={<Grade />} />
         {/* Add more routes for other pages */}
       </Routes>

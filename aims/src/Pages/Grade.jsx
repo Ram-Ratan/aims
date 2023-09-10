@@ -2,7 +2,7 @@ import React from 'react'
 
 const Grade = () => {
   return (
-    <div>
+    <div className='ml-4 mt-4'>
       Grade component
     </div>
   )
