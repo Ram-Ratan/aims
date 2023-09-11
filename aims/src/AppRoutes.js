@@ -5,6 +5,7 @@ import About from "./Pages/About";
 import Grade from "./Pages/Grade";
 import PersonalDetails from './Pages/PersonalDetails';
 import Home from './Pages/Home';
+import CourseRegistration from './Pages/courseRegistration/CourseRegistration';
 import Auth from './Pages/auth/Auth';
 const AppRoutes = () => {
   return (
@@ -15,6 +16,7 @@ const AppRoutes = () => {
         <Route path="/login" element={<Auth />} />
         <Route path="/personal-details" element={<PersonalDetails />} />
         <Route path="/grade" element={<Grade />} />
+        <Route path="/course-registration" element={<CourseRegistration />} />
         {/* Add more routes for other pages */}
       </Routes>
     </Layouts>
