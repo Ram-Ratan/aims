@@ -1,7 +1,10 @@
 import React from 'react';
 import aims from '../../assets/AIMS-logo.png'
 import userIcon from '../../assets/user.png'
+import { useNavigate } from 'react-router-dom';
+
 function Header() {
+  const navigate = useNavigate();
   return (
     <header
       className="bg-white p-4 flex justify-between items-center h-14 sticky top-0"
@@ -16,7 +19,10 @@ function Header() {
       </div>
 
       {/* User Avatar */}
-      <div className="flex items-center">
+      <div className="flex items-center gap-4 cursor-pointer">
+        <div onClick={()=>{navigate('/login')}}>
+          <p className='text-blue-400'>LogIn</p>
+        </div>
         <img
           src={userIcon} // Replace with the actual path to your avatar image
           alt="Avatar"

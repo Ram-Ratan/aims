@@ -6,7 +6,7 @@ import Grade from "./Pages/Grade";
 import PersonalDetails from './Pages/PersonalDetails';
 import Home from './Pages/home/Home';
 import CourseRegistration from './Pages/courseRegistration/CourseRegistration';
-import Auth from './Pages/auth/Auth';
+import Auth from './Pages/Auth/Auth';
 const AppRoutes = () => {
   return (
     <Layouts>

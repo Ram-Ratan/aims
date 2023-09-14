@@ -14,32 +14,29 @@ const Auth = () => {
         <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
           <img src={aims} alt="logo-image" className="h-10 w-10 mx-auto mb-6" />
 
-          <form>
-
-
+          <form onSubmit={() => {}}>
             {/* Dropdown input for selecting role */}
-          {isSignUp && (
-            <div className="mb-4">
-              <label
-                htmlFor="role"
-                className="block text-gray-700 text-sm font-bold mb-2"
-              >
-                Role
-              </label>
-              <select
-                id="role"
-                name="role"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-400"
-                value={selectedRole}
-                onChange={handleRoleChange}
-              >
-                <option value="student">Student</option>
-                <option value="admin">Admin</option>
-                <option value="faculty">Faculty</option>
-              </select>
-            </div>
-          )}
-
+            {isSignUp && (
+              <div className="mb-4">
+                <label
+                  htmlFor="role"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Role
+                </label>
+                <select
+                  id="role"
+                  name="role"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-400"
+                  value={selectedRole}
+                  onChange={handleRoleChange}
+                >
+                  <option value="student">Student</option>
+                  <option value="admin">Admin</option>
+                  <option value="faculty">Faculty</option>
+                </select>
+              </div>
+            )}
 
             {isSignUp && (
               <div className="mb-4">
@@ -97,6 +94,23 @@ const Auth = () => {
             >
               {isSignUp ? "Sign up" : "Log in"}
             </button>
+            <div className="flex justify-center pt-4">
+              {isSignUp ? (
+                <div className="flex gap-2">
+                  <p>Have an account!</p>
+                  <button type="button" onClick={() => setIsSignUp(!isSignUp)}>
+                    <p className="font bold text-blue-400">LogIn</p>
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <p>Don't have an account</p>
+                  <button type="button" onClick={() => setIsSignUp(!isSignUp)}>
+                    <p className="font bold text-blue-400">Sign Up</p>
+                  </button>
+                </div>
+              )}
+            </div>
           </form>
         </div>
       </div>
