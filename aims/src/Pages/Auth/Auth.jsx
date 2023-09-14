@@ -3,6 +3,11 @@ import aims from '../../assets/AIMS-logo.png';
 
 const Auth = () => {
     const [isSignUp, setIsSignUp] = useState(true);
+    const [selectedRole, setSelectedRole] = useState('student'); // Initialize with 'student'
+
+    const handleRoleChange = (e) => {
+      setSelectedRole(e.target.value);
+    };
 
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -10,6 +15,32 @@ const Auth = () => {
           <img src={aims} alt="logo-image" className="h-10 w-10 mx-auto mb-6" />
 
           <form>
+
+
+            {/* Dropdown input for selecting role */}
+          {isSignUp && (
+            <div className="mb-4">
+              <label
+                htmlFor="role"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                Role
+              </label>
+              <select
+                id="role"
+                name="role"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-400"
+                value={selectedRole}
+                onChange={handleRoleChange}
+              >
+                <option value="student">Student</option>
+                <option value="admin">Admin</option>
+                <option value="faculty">Faculty</option>
+              </select>
+            </div>
+          )}
+
+
             {isSignUp && (
               <div className="mb-4">
                 <label

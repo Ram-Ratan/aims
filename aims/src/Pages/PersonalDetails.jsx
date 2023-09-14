@@ -1,5 +1,6 @@
 import React from 'react'
-import Auth from './auth/Auth';
+import Auth from './Auth/Auth';
+
 const PersonalDetails = () => {
   return (
     <div className='pl-4 pt-4'>
