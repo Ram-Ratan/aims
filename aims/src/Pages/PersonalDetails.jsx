@@ -1,11 +1,9 @@
 import React from 'react'
-import Auth from './Auth/Auth';
+import Auth from './auth/Auth';
 const PersonalDetails = () => {
   return (
-    
-    <div style={{ marginLeft: '15%', marginTop:'2%'}}>
-        <div>Personal Details Component</div>
-        <Auth />
+    <div className='pl-4 pt-4'>
+      PersonalDetails component
     </div>
     
   )
