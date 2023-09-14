@@ -5,7 +5,8 @@ import About from "./Pages/About";
 import Grade from "./Pages/Grade";
 import PersonalDetails from './Pages/PersonalDetails';
 import Home from './Pages/Home';
-import Auth from './Pages/auth/Auth';
+import Auth from './Pages/Auth/Auth';
+ 
 const AppRoutes = () => {
   return (
     <Layouts>
