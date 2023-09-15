@@ -2,9 +2,9 @@ import axios from "axios";
 
 export const signUP =async (payload)=>{
     console.log('signup')
-    await axios
+    const response = await axios
       .post(
-        "https://8e99-220-158-168-162.ngrok-free.app//api/user/signup",
+        "https:localhost:4000/api/user/signup",
         payload
       )
       .then((response) => {
@@ -13,15 +13,18 @@ export const signUP =async (payload)=>{
       .catch((error) => {
         console.error("Error:", error);
       });
+
+      return response;
 }
 
 export const logIn = async (payload) => {
-  axios
-    .post("localhost:4000/user/login", payload)
+  const response = axios
+    .post("localhost:4000/api/user/login", payload)
     .then((response) => {
       console.log(response.data);
     })
     .catch((error) => {
       console.error("Error:", error);
     });
+    return response;
 };

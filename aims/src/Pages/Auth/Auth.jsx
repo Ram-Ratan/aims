@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import aims from '../../assets/AIMS-logo.png';
-import { signUP } from '../../apiClient/auth';
+import { logIn, signUP } from '../../apiClient/auth';
+import { useNavigate } from 'react-router-dom';
 
 const Auth = () => {
     const [isSignUp, setIsSignUp] = useState(true);
     const [selectedRole, setSelectedRole] = useState('student'); // Initialize with 'student'
+    const navigate = useNavigate();
 
     const handleRoleChange = (e) => {
       setSelectedRole(e.target.value);
@@ -32,7 +34,9 @@ const Auth = () => {
             }
           : {}),
       };
-      const response = await signUP(payload);
+      let response;
+      isSignUp? response = await signUP(payload): response = await logIn(payload);
+      navigate('/home')
       console.log(response);
     }
 
