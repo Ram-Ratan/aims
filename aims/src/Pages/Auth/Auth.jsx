@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import aims from '../../assets/AIMS-logo.png';
+import { signUP } from '../../apiClient/auth';
 
 const Auth = () => {
     const [isSignUp, setIsSignUp] = useState(true);
@@ -9,12 +10,38 @@ const Auth = () => {
       setSelectedRole(e.target.value);
     };
 
+
+    const handleSubmit = async (e)=>{
+      e.preventDefault();
+      const email = e.target.email.value;
+      const name = e.target?.name?.value;
+      const role = e.target?.role?.value;
+      const password = e.target.password.value;
+      const logInPayload = {
+        "email":email,
+        "password": password
+      }
+      const payload = {
+        ...logInPayload,
+        ...(name ? { name: name } : {}),
+        ...(role
+          ? {
+              isAdmin: role === "admin",
+              isStudent: role === "student",
+              isFaculty: role === "faculty",
+            }
+          : {}),
+      };
+      const response = await signUP(payload);
+      console.log(response);
+    }
+
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
           <img src={aims} alt="logo-image" className="h-10 w-10 mx-auto mb-6" />
 
-          <form onSubmit={() => {}}>
+          <form onSubmit={(e)=>{handleSubmit(e)}}>
             {/* Dropdown input for selecting role */}
             {isSignUp && (
               <div className="mb-4">
