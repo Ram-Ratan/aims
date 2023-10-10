@@ -7,6 +7,7 @@ const CourseRegistration = () => {
     name: '',
     email: '',
     selectedCourse: 'CSE',
+    semester:1,
     selectedSubjects: [], // To store selected subjects
   });
 
@@ -97,6 +98,25 @@ const CourseRegistration = () => {
             <option value="CSE">CSE</option>
             <option value="ECE">ECE</option>
             <option value="IT">IT</option>
+          </select>
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor='semester' className='block text-sm font-medium text-gray-600'>Semester</label>
+          <select
+            id='semester'
+            name='semester'
+            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:border-blue-400"
+            onChange={(e)=>setFormData({semester:e.target.value})}
+          >
+            <option value='1'>1</option>
+            <option value='2'>2</option>
+            <option value='3'>3</option>
+            <option value='4'>4</option>
+            <option value='5'>5</option>
+            <option value='6'>6</option>
+            <option value='7'>7</option>
+            <option value='8'>8</option>
           </select>
         </div>
 
