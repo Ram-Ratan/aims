@@ -1,10 +1,16 @@
 import './App.css';
+import { BrowserRouter as Router} from 'react-router-dom';
+import AppRoutes from './AppRoutes';
+
 
 function App() {
   return (
-    <div className="App">
-      <h1>AIMS Portal</h1>
+    <div>
+      <Router>
+          <AppRoutes />
+      </Router>
     </div>
+    
   );
 }
 
