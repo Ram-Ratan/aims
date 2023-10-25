@@ -71,7 +71,7 @@ const Attendance = () => {
             <div>
               <div className="flex gap-4">
                 <div className="">
-                  <Select label="Select Course" className="flex flex-col" />
+                  <Select label="Select Course" className="flex flex-col"/>
                 </div>
                 <div>
                   <DatePicker label="Select Date" />
