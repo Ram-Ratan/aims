@@ -59,6 +59,16 @@ function Navbar() {
             </NavLink>
           </li>
           <li>
+            <NavLink
+              exact="true"
+              to="/attendance"
+              activeClassName="active"
+              className="block text-md text-black p-2"
+            >
+              Attendance
+            </NavLink>
+          </li>
+          <li>
             <NavLink 
               exact='true'
               to='/placement'
