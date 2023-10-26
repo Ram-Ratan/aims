@@ -1,8 +1,63 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import Select from '../../components/select/Select';
+import { getCourses, getBranch, getSem } from '../../apiClient/courseRegistration';
 
 const CourseRegistration = () => {
+    const [courses, setCourses] = useState([]);
+    const [branches,setBranches] = useState([]);
+    const [sem,setSem] = useState([]);
+    useEffect(()=>{
+      getCourses().then((res)=>{
+        setCourses(res);
+        console.log(res);
+      }).catch((err)=>{
+        console.log(err);
+      })
+    },[])
 
+    useEffect(()=>{
+      getBranch().then((res)=>{
+        setBranches(res);
+        console.log(res);
+      }).catch((err)=>{
+        console.log(err);
+      })
+    },[])
+
+    useEffect(()=>{
+      getSem().then((res)=>{
+        setSem(res)
+        console.log(res);
+      }).catch((err)=>{
+        console.log(err);
+      })
+    },[])
+
+    const courseOptions = courses.map((course)=>{
+    return {
+      label: course?.courseName,
+      value: course?.courseCode,
+      ...course
+    }
+    })
+
+    const branchOptions = branches.map((branch) => {
+      return {
+        label: branch?.name,
+        value: branch?.code,
+        ...branch
+      }
+    })
   
+    const semOptions = sem.map((sem) => {
+      return {
+        label: sem?.name,
+        value: sem?.code,
+        ...sem
+      }
+    })
+
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -84,7 +139,7 @@ const CourseRegistration = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="selectedCourse" className="block text-sm font-medium text-gray-600">
+          {/* <label htmlFor="selectedCourse" className="block text-sm font-medium text-gray-600">
             Branch Name
           </label>
           <select
@@ -97,14 +152,19 @@ const CourseRegistration = () => {
             <option value="CSE">CSE</option>
             <option value="ECE">ECE</option>
             <option value="IT">IT</option>
-          </select>
-        </div>
+          </select> */}
 
+          <Select label='Branch Name' options={branchOptions} required={true}/>
+
+        </div>
+        <div className='mb-4'>
+          <Select label='semester' options={semOptions} required={true}/>
+        </div>
         <div className="mb-4">
-          <label htmlFor="selectedSubjects" className="block text-sm font-medium text-gray-600">
+          {/* <label htmlFor="selectedSubjects" className="block text-sm font-medium text-gray-600">
             Subjects
-          </label>
-          <select
+          </label> */}
+          {/* <select
             id="selectedSubjects"
             name="selectedSubjects"
             multiple
@@ -119,7 +179,8 @@ const CourseRegistration = () => {
             <option value="VHDL">VHDL</option>
             <option value="Wireless Communication">Wireless Communication</option>
             <option value="Nano Technology">Nano Technology</option>
-          </select>
+          </select> */}
+          <Select label="Select courses" options={courseOptions} required={true} isMulti={true}/>
         </div>
 
         <div className="mb-4">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import aims from '../../assets/AIMS-logo.png';
 import { logIn, signUP } from '../../apiClient/auth';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +11,7 @@ const Auth = () => {
     const handleRoleChange = (e) => {
       setSelectedRole(e.target.value);
     };
-
+  
 
     const handleSubmit = async (e)=>{
       e.preventDefault();
