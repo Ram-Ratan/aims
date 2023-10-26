@@ -6,14 +6,15 @@ const CourseRegistration = () => {
     const [courses, setCourses] = useState([]);
     const [branches,setBranches] = useState([]);
     const [sem,setSem] = useState([]);
+    const [selectedSem, setSelectedSem] = useState(null);
     useEffect(()=>{
-      getCourses().then((res)=>{
+      getCourses({semId: selectedSem?._id}).then((res)=>{
         setCourses(res);
         console.log(res);
       }).catch((err)=>{
         console.log(err);
       })
-    },[])
+    },[selectedSem])
 
     useEffect(()=>{
       getBranch().then((res)=>{
@@ -33,7 +34,7 @@ const CourseRegistration = () => {
       })
     },[])
 
-    const courseOptions = courses.map((course)=>{
+    const courseOptions = courses?.map((course)=>{
     return {
       label: course?.courseName,
       value: course?.courseCode,
@@ -70,20 +71,6 @@ const CourseRegistration = () => {
     setFormData({
       ...formData,
       [name]: value,
-    });
-  };
-
-  const handleSubjectsChange = (e) => {
-    const options = e.target.options;
-    const selectedSubjects = [];
-    for (let i = 0; i < options.length; i++) {
-      if (options[i].selected) {
-        selectedSubjects.push(options[i].value);
-      }
-    }
-    setFormData({
-      ...formData,
-      selectedSubjects: selectedSubjects,
     });
   };
 
@@ -139,47 +126,14 @@ const CourseRegistration = () => {
           />
         </div>
         <div className="mb-4">
-          {/* <label htmlFor="selectedCourse" className="block text-sm font-medium text-gray-600">
-            Branch Name
-          </label>
-          <select
-            id="selectedCourse"
-            name="selectedCourse"
-            value={formData.selectedCourse}
-            onChange={handleInputChange}
-            className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:border-blue-400"
-          >
-            <option value="CSE">CSE</option>
-            <option value="ECE">ECE</option>
-            <option value="IT">IT</option>
-          </select> */}
 
           <Select label='Branch Name' options={branchOptions} required={true}/>
 
         </div>
         <div className='mb-4'>
-          <Select label='semester' options={semOptions} required={true}/>
+          <Select label='semester' options={semOptions} required={true} value={selectedSem} onChange={(e)=>{setSelectedSem(e)}} />
         </div>
         <div className="mb-4">
-          {/* <label htmlFor="selectedSubjects" className="block text-sm font-medium text-gray-600">
-            Subjects
-          </label> */}
-          {/* <select
-            id="selectedSubjects"
-            name="selectedSubjects"
-            multiple
-            value={formData.selectedSubjects}
-            onChange={handleSubjectsChange}
-            className="border border-gray-300 rounded-md p-2 w-full h-24 focus:outline-none focus:border-blue-400"
-          >
-            <option value="Control System">Control System</option>
-            <option value="Machine Learning">Machine Learning</option>
-            <option value="Computer Networks">Computer Networks</option>
-            <option value="VLSI">VLSI</option>
-            <option value="VHDL">VHDL</option>
-            <option value="Wireless Communication">Wireless Communication</option>
-            <option value="Nano Technology">Nano Technology</option>
-          </select> */}
           <Select label="Select courses" options={courseOptions} required={true} isMulti={true}/>
         </div>
 

@@ -1,11 +1,16 @@
 import axios from "axios";
-
+import * as CONSTANT from "./api.constant";
+let config = {
+  headers: {
+    "ngrok-skip-browser-warning": 69420,
+  },
+};
 export const signUP =async (payload)=>{
-    console.log('signup')
+  const url = `${CONSTANT.API_URL}/api/user/signup`;
     const response = await axios
       .post(
-        "https://7aef-220-158-168-162.ngrok-free.app/api/user/signup",
-        payload
+        url,
+        payload,config
       )
       .then((response) => {
         console.log(response.data);
@@ -18,8 +23,9 @@ export const signUP =async (payload)=>{
 }
 
 export const logIn = async (payload) => {
+  const url = `${CONSTANT.API_URL}/api/user/login`;
   const response = axios
-    .post("localhost:4000/api/user/login", payload)
+    .post(url, payload,config)
     .then((response) => {
       console.log(response.data);
     })
