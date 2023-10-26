@@ -4,7 +4,7 @@ export const signUP =async (payload)=>{
     console.log('signup')
     const response = await axios
       .post(
-        "https:localhost:4000/api/user/signup",
+        "https://7aef-220-158-168-162.ngrok-free.app/api/user/signup",
         payload
       )
       .then((response) => {
