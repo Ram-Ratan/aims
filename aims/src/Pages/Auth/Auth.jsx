@@ -35,15 +35,21 @@ const Auth = () => {
           : {}),
       };
       let response;
-      isSignUp? response = await signUP(payload): response = await logIn(payload);
-      navigate('/home')
-      console.log(response);
+      isSignUp? response = await signUP(payload).then((res)=>{
+        localStorage.setItem("user",JSON.stringify(res));
+        navigate('/')
+        window.location.reload();
+      }): response = await logIn(payload).then((res)=>{
+        localStorage.setItem("user", JSON.stringify(res));
+        navigate('/')
+        window.location.reload();
+      });
     }
 
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
-          <img src={aims} alt="logo-image" className="h-10 w-10 mx-auto mb-6" />
+          <img src={aims} alt="logo" className="h-10 w-10 mx-auto mb-6" />
 
           <form onSubmit={(e)=>{handleSubmit(e)}}>
             {/* Dropdown input for selecting role */}

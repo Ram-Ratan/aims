@@ -20,9 +20,25 @@ function Header() {
 
       {/* User Avatar */}
       <div className="flex items-center gap-4 cursor-pointer">
-        <div onClick={()=>{navigate('/login')}}>
-          <p className='text-blue-400'>LogIn</p>
-        </div>
+        {localStorage.getItem("user") ? (
+          <div
+            onClick={() => {
+              localStorage.removeItem("user");
+              navigate("/login")
+              window.location.reload();
+            }}
+          >
+            <p className="text-blue-400">Log Out</p>
+          </div>
+        ) : (
+          <div
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            <p className="text-blue-400">LogIn</p>
+          </div>
+        )}
         <img
           src={userIcon} // Replace with the actual path to your avatar image
           alt="Avatar"
