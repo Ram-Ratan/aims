@@ -3,7 +3,7 @@ import React from 'react';
 const PersonalDetails = () => {
   // Sample user data (you can load this from your database)
   const userData = {
-    name: 'John Doe',
+    name: JSON.parse(localStorage.getItem("user"))?.name,
     rollNo: '20232',
     dateOfBirth: '20-02-2000',
     email: 'johndoe@example.com',
