@@ -198,7 +198,7 @@ const Attendance = () => {
         <div className="flex flex-col gap-4 border p-4 rounded-lg bg-gray-50 shadow-md">
           <div className="flex flex-col gap-2">
             <div className="py-2">
-              <h2 className="font-bold text-2xl">Welcome! Name</h2>
+              <h2 className="font-bold text-2xl">Welcome! {JSON.parse(localStorage.getItem("user"))?.name}</h2>
             </div>
             <div>
               <div className="flex gap-4">
