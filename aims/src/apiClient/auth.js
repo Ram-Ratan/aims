@@ -27,7 +27,7 @@ export const logIn = async (payload) => {
   const response = axios
     .post(url, payload,config)
     .then((response) => {
-      console.log(response.data);
+      localStorage.setItem("user",JSON.stringify(response?.data));
     })
     .catch((error) => {
       console.error("Error:", error);

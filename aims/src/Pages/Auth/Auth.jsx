@@ -40,7 +40,7 @@ const Auth = () => {
         navigate('/')
         window.location.reload();
       }): response = await logIn(payload).then((res)=>{
-        localStorage.setItem("user", JSON.stringify(res));
+        // localStorage.setItem("user", JSON.stringify(res));
         navigate('/')
         window.location.reload();
       });
