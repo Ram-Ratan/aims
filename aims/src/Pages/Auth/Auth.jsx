@@ -36,7 +36,6 @@ const Auth = () => {
       };
       let response;
       isSignUp? response = await signUP(payload).then((res)=>{
-        localStorage.setItem("user",JSON.stringify(res));
         navigate('/')
         window.location.reload();
       }): response = await logIn(payload).then((res)=>{
