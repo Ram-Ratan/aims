@@ -7,6 +7,7 @@ const CourseRegistration = () => {
     const [branches,setBranches] = useState([]);
     const [sem,setSem] = useState([]);
     const [selectedSem, setSelectedSem] = useState(null);
+
     useEffect(()=>{
       getCourses({semId: selectedSem?._id}).then((res)=>{
         setCourses(res);
@@ -23,7 +24,7 @@ const CourseRegistration = () => {
       }).catch((err)=>{
         console.log(err);
       })
-    },[])
+    },[branches])
 
     useEffect(()=>{
       getSem().then((res)=>{
@@ -32,7 +33,7 @@ const CourseRegistration = () => {
       }).catch((err)=>{
         console.log(err);
       })
-    },[])
+    },[sem])
 
     const courseOptions = courses?.map((course)=>{
     return {
