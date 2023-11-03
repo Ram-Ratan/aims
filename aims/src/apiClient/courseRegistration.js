@@ -35,3 +35,15 @@ export const getSem = async () => {
   console.log(response?.data);
   return response?.data;
 };
+
+export const courseRegistration = async (payload) => {
+  let config = {
+    headers: {
+      "ngrok-skip-browser-warning": 69420,
+    },
+  };
+  const url = `${CONSTANT.API_URL}/api/course/course-registration`;
+  const response = await axios.post(url,payload, config);
+  console.log(response?.data);
+  return response?.data;
+};

@@ -3,7 +3,7 @@ import React from 'react';
 const PersonalDetails = () => {
   // Sample user data (you can load this from your database)
   const userData = {
-    name: 'John Doe',
+    name: JSON.parse(localStorage.getItem("user"))?.name,
     rollNo: '20232',
     dateOfBirth: '20-02-2000',
     email: 'johndoe@example.com',
@@ -24,7 +24,7 @@ const PersonalDetails = () => {
         </div>
       </div>
       <div className='mt-14'>
-        <div className='mx-32 bg-gray-200 border rounded-md shadow-lg p-4'> 
+        <div className='mx-32 bg-gray-50 border rounded-md shadow-lg p-4'> 
           <div className='flex flex-col gap-2'>
               <div className='py-2'>
                 <h2 className='font-bold text-2xl'><strong>Welcome, {userData.name}</strong></h2>
