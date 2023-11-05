@@ -113,9 +113,7 @@ const Auth = () => {
               >
                 Password
               </label>
-              {!isSignUp && (
-                <p className="text-blue-500 text-xs">Forgot password?</p>
-              )}
+             
               <input
                 type="password"
                 name="password"
