@@ -8,6 +8,7 @@ import {
 } from "../../apiClient/courseRegistration";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router-dom";
+import { getStudent } from "../../apiClient/personalDetails";
 
 const CourseRegistration = () => {
   const [courses, setCourses] = useState([]);
@@ -18,7 +19,7 @@ const CourseRegistration = () => {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
-    getCourses({ semId: selectedSem?._id })
+    getCourses({ semesterId: selectedSem?.id, branchId: selectedBranch?.id })
       .then((res) => {
         setCourses(res);
         console.log(res);
@@ -26,7 +27,7 @@ const CourseRegistration = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [selectedSem]);
+  }, [selectedSem, selectedBranch]);
 
   useEffect(() => {
     getBranch()
@@ -52,8 +53,8 @@ const CourseRegistration = () => {
 
   const courseOptions = courses?.map((course) => {
     return {
-      label: course?.courseName,
-      value: course?.courseCode,
+      label: course?.name,
+      value: course?.id,
       ...course,
     };
   });
@@ -61,15 +62,15 @@ const CourseRegistration = () => {
   const branchOptions = branches.map((branch) => {
     return {
       label: branch?.name,
-      value: branch?.code,
+      value: branch?.id,
       ...branch,
     };
   });
 
   const semOptions = sem.map((sem) => {
     return {
-      label: sem?.name,
-      value: sem?.code,
+      label: sem?.sem,
+      value: sem?.id,
       ...sem,
     };
   });
@@ -91,16 +92,14 @@ const CourseRegistration = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = JSON.parse(localStorage.getItem("user"));
-    console.log(selectedCourse, selectedBranch,selectedSem)
-    const payload = selectedCourse?.map((course)=>{
-      return {
-        user: user?._id,
-        branch: selectedBranch?._id,
-        semester: selectedSem?._id,
-        course: course._id
-      };
-    })
+    const userId = JSON.parse(localStorage.getItem("user"))?.id;
+    const student = await getStudent({userId: userId});
+    console.log(selectedCourse)
+    const payload = {
+      studentId: student[0]?.id,
+      courses: selectedCourse?.map((value)=> value?.id)
+    }
+    console.log(payload)
     await courseRegistration(payload).then((res)=>{
       navigate("/personal-details")
     }).catch((err)=>{

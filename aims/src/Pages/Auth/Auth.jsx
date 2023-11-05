@@ -20,25 +20,25 @@ const Auth = () => {
       const role = e.target?.role?.value;
       const password = e.target.password.value;
       const logInPayload = {
-        "email":email,
+        "username":email,
         "password": password
       }
-      const payload = {
-        ...logInPayload,
-        ...(name ? { name: name } : {}),
-        ...(role
-          ? {
-              isAdmin: role === "admin",
-              isStudent: role === "student",
-              isFaculty: role === "faculty",
-            }
-          : {}),
-      };
+      // const payload = {
+      //   ...logInPayload,
+      //   ...(name ? { name: name } : {}),
+      //   ...(role
+      //     ? {
+      //         isAdmin: role === "admin",
+      //         isStudent: role === "student",
+      //         isFaculty: role === "faculty",
+      //       }
+      //     : {}),
+      // };
       let response;
-      isSignUp? response = await signUP(payload).then((res)=>{
+      isSignUp? response = await signUP(logInPayload).then((res)=>{
         navigate('/')
         window.location.reload();
-      }): response = await logIn(payload).then((res)=>{
+      }): response = await logIn(logInPayload).then((res)=>{
         // localStorage.setItem("user", JSON.stringify(res));
         navigate('/')
         window.location.reload();

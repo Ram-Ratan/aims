@@ -7,13 +7,18 @@ export const getCourses = async (payload) => {
       "ngrok-skip-browser-warning": 69420,
     },
   };
-  const url = `${CONSTANT.API_URL}/api/course/get-courses-by-sem?semId=${payload?.semId}`;
+  const {semesterId, branchId} = payload
+  let url = `${CONSTANT.API_URL}/course/get-all-courses`;
+  if(semesterId) url += `?semesterId=${semesterId}`;
+  if(branchId) semesterId
+    ? (url += `&branchId=${branchId}`)
+    : (url += `?branchId=${branchId}`);
   const response = await axios.get(url, config);
   return response?.data;
 };
 
 export const getBranch = async () => {
-  const url = `${CONSTANT.API_URL}/api/utils/get-all-branchs`;
+  const url = `${CONSTANT.API_URL}/branch/get-all-branch`;
   let config = {
     headers: {
       "ngrok-skip-browser-warning": 69420,
@@ -30,7 +35,7 @@ export const getSem = async () => {
       "ngrok-skip-browser-warning": 69420,
     },
   };
-  const url = `${CONSTANT.API_URL}/api/utils/get-all-semesters`;
+  const url = `${CONSTANT.API_URL}/semester/get-all-semester`;
   const response = await axios.get(url, config);
   console.log(response?.data);
   return response?.data;
@@ -42,8 +47,22 @@ export const courseRegistration = async (payload) => {
       "ngrok-skip-browser-warning": 69420,
     },
   };
-  const url = `${CONSTANT.API_URL}/api/course/course-registration`;
+  const url = `${CONSTANT.API_URL}/course-registration/register`;
   const response = await axios.post(url,payload, config);
+  console.log(response?.data);
+  return response?.data;
+};
+
+export const getCourseRegisteredById = async (payload) => {
+  let config = {
+    headers: {
+      "ngrok-skip-browser-warning": 69420,
+    },
+  };
+  const {userId} = payload;
+  let url = `${CONSTANT.API_URL}/course-registration/course-registered-by-id`;
+  if(userId) url += `?id=${userId}`;
+  const response = await axios.get(url, config);
   console.log(response?.data);
   return response?.data;
 };
