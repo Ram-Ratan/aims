@@ -6,7 +6,7 @@ let config = {
   },
 };
 export const signUP =async (payload)=>{
-  const url = `${CONSTANT.API_URL}/api/user/signup`;
+  const url = `${CONSTANT.API_URL}/user/get-user`;
     const response = await axios
       .post(
         url,
@@ -24,7 +24,7 @@ export const signUP =async (payload)=>{
 }
 
 export const logIn = async (payload) => {
-  const url = `${CONSTANT.API_URL}/api/user/login`;
+  const url = `${CONSTANT.API_URL}/user/get-user`;
   const response = axios
     .post(url, payload,config)
     .then((response) => {

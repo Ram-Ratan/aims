@@ -3,7 +3,7 @@ import Layouts from './layouts/Layouts';
 import { Route, Routes} from "react-router-dom";
 import About from "./Pages/about/About";
 import Grade from "./Pages/Grade"; 
-import PersonalDetails from './Pages/PersonalDetails';
+import PersonalDetails from './Pages/personalDetails/PersonalDetails';
 import Home from './Pages/home/Home';
 import CourseRegistration from './Pages/courseRegistration/CourseRegistration';
 import Auth from './Pages/Auth/Auth';
