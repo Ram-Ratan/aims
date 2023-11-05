@@ -26,12 +26,6 @@ export const signUP =async (payload)=>{
 export const logIn = async (payload) => {
   const url = `${CONSTANT.API_URL}/user/get-user`;
   const response = axios
-    .post(url, payload,config)
-    .then((response) => {
-      localStorage.setItem("user",JSON.stringify(response?.data));
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+    .post(url, payload,config);
     return response;
 };
