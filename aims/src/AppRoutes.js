@@ -21,7 +21,7 @@ const AppRoutes = () => {
         <Route path="/grade" element={<Grade />} />
         <Route path="/course-registration" element={<CourseRegistration />} />
         <Route path='/attendance' element={<Attendance />} />
-        <Route path='placement' element={<Placement />} />
+        {/* <Route path='placement' element={<Placement />} /> */}
         {/* Add more routes for other pages */}
       </Routes>
     </Layouts>

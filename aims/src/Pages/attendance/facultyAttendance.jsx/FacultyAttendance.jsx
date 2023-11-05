@@ -36,7 +36,7 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
   }
 
   useEffect(() => {
-    getStudentByCourse({ courseId: selectedCourse?.id }).then((res)=>{
+    getStudentByCourse({ courseId: selectedCourse?.courseId }).then((res)=>{
       setRegisteredStudent(formatData(res))
     }).catch((err)=>{
       setRegisteredStudent(null);
@@ -107,7 +107,7 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
 
   const handleMarkAttendance = async ()=>{
     const payload = {
-      courseId: selectedCourse?.id,
+      courseId: selectedCourse?.courseId,
       attendance: registeredStudent?.map((student)=>{
         return {
           id: student?.studentId,
@@ -117,16 +117,21 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
       date: selectedDate
     }
 
-    const showToastMessage = () => {
-      toast.success('Attendance marked', {
+    const showToastMessage = (message) => {
+      toast.success(message, {
           position: toast.POSITION.TOP_RIGHT
       });
     };
+    const showErrorToastMessage = (message)=>{
+      toast.error(message,{
+        position: toast.POSITION.TOP_RIGHT
+      })
+    }
 
     await markAttendance(payload).then((res)=>{
-        showToastMessage();
+        showToastMessage("Attendance Marked Successfully!");
     }).catch((err)=>{
-      showToastMessage();
+      showErrorToastMessage("Attendance Failed");
     })
   }
 
