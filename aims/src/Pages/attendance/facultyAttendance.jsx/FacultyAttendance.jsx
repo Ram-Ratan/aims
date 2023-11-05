@@ -117,16 +117,21 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
       date: selectedDate
     }
 
-    const showToastMessage = () => {
-      toast.success('Attendance marked', {
+    const showToastMessage = (message) => {
+      toast.success(message, {
           position: toast.POSITION.TOP_RIGHT
       });
     };
+    const showErrorToastMessage = (message)=>{
+      toast.error(message,{
+        position: toast.POSITION.TOP_RIGHT
+      })
+    }
 
     await markAttendance(payload).then((res)=>{
-        showToastMessage();
+        showToastMessage("Attendance Marked Successfully!");
     }).catch((err)=>{
-      showToastMessage();
+      showErrorToastMessage("Attendance Failed");
     })
   }
 
