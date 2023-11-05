@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import aims from '../../assets/AIMS-logo.png';
 import { logIn, signUP } from '../../apiClient/auth';
 import { useNavigate } from 'react-router-dom';
+import { showErrorToastMessage, showToastMessage } from '../utils/utils';
+import { ToastContainer } from 'react-toastify';
 
 const Auth = () => {
     const [isSignUp, setIsSignUp] = useState(false);
@@ -34,23 +36,36 @@ const Auth = () => {
       //       }
       //     : {}),
       // };
-      let response;
-      isSignUp? response = await signUP(logInPayload).then((res)=>{
+      isSignUp? await signUP(logInPayload).then((res)=>{
         navigate('/')
         window.location.reload();
-      }): response = await logIn(logInPayload).then((res)=>{
-        // localStorage.setItem("user", JSON.stringify(res));
-        navigate('/')
-        window.location.reload();
-      });
+      }): await logIn(logInPayload).then((res)=>{
+        console.log('res',res)
+        if(res?.data){
+          localStorage.setItem("user", JSON.stringify(res?.data));
+          navigate("/");
+          window.location.reload();
+          showToastMessage("LoggedIn Successfully!");
+        }else{
+          showErrorToastMessage("Enter Valid Username and Password");
+        }
+      }).catch((err)=>{
+        showErrorToastMessage("Enter Valid Username and Password")
+      })
     }
 
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <ToastContainer />
+
         <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
           <img src={aims} alt="logo" className="h-10 w-10 mx-auto mb-6" />
 
-          <form onSubmit={(e)=>{handleSubmit(e)}}>
+          <form
+            onSubmit={(e) => {
+              handleSubmit(e);
+            }}
+          >
             {/* Dropdown input for selecting role */}
             {isSignUp && (
               <div className="mb-4">

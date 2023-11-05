@@ -5,6 +5,7 @@ import Select from '../../../components/select/Select';
 import { getStudentByCourse, markAttendance } from '../../../apiClient/attendance';
 import {ToastContainer, toast} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { showErrorToastMessage, showToastMessage } from '../../utils/utils';
 
 const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
 
@@ -117,16 +118,6 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
       date: selectedDate
     }
 
-    const showToastMessage = (message) => {
-      toast.success(message, {
-          position: toast.POSITION.TOP_RIGHT
-      });
-    };
-    const showErrorToastMessage = (message)=>{
-      toast.error(message,{
-        position: toast.POSITION.TOP_RIGHT
-      })
-    }
 
     await markAttendance(payload).then((res)=>{
         showToastMessage("Attendance Marked Successfully!");
@@ -142,7 +133,7 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
       <ToastContainer />
       {registeredStudent && (
         <div className="grid grid-cols-1">
-          <div className="overflow-x-auto">
+          <div className="">
             <div className="w-full mb-2">
               <div className="flex justify-end gap-4">
                 <Button variant="outlined" onClick={markAllPresent}>
