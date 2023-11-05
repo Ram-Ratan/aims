@@ -78,72 +78,85 @@ const Grade = () => {
     }
   })
 
+
   return (
     <div>
       <div 
-        className='flex justify-center items-center text-3xl font-semibold w-full h-20 bg-slate-50 shadow-md'
+        className='mx-32 my-4 flex justify-center items-center text-3xl font-semibold border rounded-md h-20 shadow-md'
       >
         Grade Updation
       </div>
-      <div className='bg-gray-200 h-screen overflow-hidden mt-10 mx-2 border rounded-md py-4 font-medium'>
-        <div className='flex justify-evenly'>
-          
-            <div className='w-[150px]'>
-              <label>Select Exam</label>
-              <Select 
-                required={true} 
-                onChange={(e) => setExam(e.target.value)}
-                value={exam}
-                options={examOptions}
-              />  
-            </div>
-            <div className='w-[150px]'>
-              <label>Select Semester</label>
-              <Select 
-                required={true}
-                options={semesterOptions}
-                value={semester}
-                onChange={(e) => setSemester(e.target.value)}
-              />
-            </div>
-            <div className='w-[150px]'>
-              <label>Select Branch</label>
-              <Select 
-                required={true}
-                options={branchOptions}
-                value={branch}
-                onChange={(e)=>setBranch(e.target.value)}
-              />
-            </div>
-            <div className='w-[150px]'>
-              <label>Select Course</label>
-              <Select 
-                required={true}
-                options={courseOptions}
-                value={course}
-                onChange={(e) => setCourse(e.target.value)}
-              />
-            </div>
-            
-        </div>
-        {/* <div className='p-3 flex justify-end pr-20 bg-slate-300 w-[400px] mt-5 mx-2 border rounded-md'>
-          <input
-            type='number'
-            placeholder='Roll No.'
-            className='px-2 py-1.5 border rounded-md border-black w-[120px] mr-1'
-          />
-          <input 
-            type='number'
-            className='px-2 py-1.5 border rounded-md border-black w-20'
-          />
-          <button className='border rounded-md bg-blue-500 w-16 py-1.5 ml-1'>ADD</button>
-        </div> */}
+      
         
-        <div className='px-10 py-4'>
-          <StickyHeadTable />
-        </div>
+      <div className="mt-10 mx-32 border rounded-lg bg-gray-50 shadow-lg">
 
+        <div className='flex justify-around pt-3'>
+          <div className='w-[140px]'>
+            <Select 
+              label='Select Exam'
+              options={examOptions}
+              required={true}
+              value={exam}
+              onChange={(e) => setExam(e.target.value)}
+
+            />
+          </div>
+          <div className='w-[140px]'>
+            <Select 
+              label='Select Branch'
+              options={branchOptions}
+              required={true}
+              value={branch}
+              onChange={(e) => setBranch(e.target.value)}
+            />
+          </div>
+          <div className='w-[140px]'>
+            <Select 
+              label='Select Semester'
+              options={semesterOptions}
+              required={true}
+              value={semester}
+              onChange={(e) => setSemester(e.target.value)}
+            />
+          </div>
+          <div className='w-[140px]'>
+            <Select 
+              label='Select Course'
+              options={courseOptions}
+              required={true}
+              value={course}
+              onChange={(e) => setCourse(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className='px-4 py-10'>  
+          <table className="table-auto w-full">
+            <thead>
+              <tr>
+                <th className="bg-gray-200 border text-left p-2">Name</th>
+                <th className="bg-gray-200 border text-left p-2">Roll No.</th>
+                <th className="bg-gray-200 border text-left p-2">Marks</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="border p-2">Prithvi Singh Bhati</td>
+                <td className="border p-2">20232</td>
+                <td className="border p-2">89</td>
+              </tr>
+              <tr>
+                <td className="border p-2">Ram Ratan</td>
+                <td className="border p-2">20235</td>
+                <td className="border p-2">100</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>  
       </div>
+          
+      
+    
+      
     </div>
   )
 }
