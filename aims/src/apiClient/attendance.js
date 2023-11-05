@@ -25,3 +25,10 @@ export const attendanceByCourseAndDate = async (payload) => {
   const response = await axios.post(url,payload, config);
   return response?.data;
 };
+
+
+export const viewAttendanceByCourseAndDate = async (payload) => {
+  let url = `${CONSTANT.API_URL}/attendance/attendance-by-course-and-date`;
+  const response = await axios.post(url, payload, config);
+  return response?.data;
+};
