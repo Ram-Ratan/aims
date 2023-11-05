@@ -69,16 +69,6 @@ function Navbar() {
                 Attendance
               </NavLink>
             </li>
-            <li>
-              <NavLink
-                exact="true"
-                to="/placement"
-                activeClassName="active"
-                className="block text-md text-black p-2"
-              >
-                Placement
-              </NavLink>
-            </li>
           </ul>
         ) : (
           <ul>

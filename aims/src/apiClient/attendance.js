@@ -32,3 +32,12 @@ export const viewAttendanceByCourseAndDate = async (payload) => {
   const response = await axios.post(url, payload, config);
   return response?.data;
 };
+
+export const getCourseAssignedById = async (payload) => {
+  const { userId } = payload;
+  let url = `${CONSTANT.API_URL}/course-assigned/course-assigned-by-id`;
+  if (userId) url += `?id=${userId}`;
+  const response = await axios.get(url, config);
+  console.log(response?.data);
+  return response?.data;
+};

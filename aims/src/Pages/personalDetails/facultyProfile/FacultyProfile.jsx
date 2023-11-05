@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { getFaculty } from "../../../apiClient/personalDetails";
-import { getCourseRegisteredById } from "../../../apiClient/courseRegistration";
 
 const FacultyProfile = () => {
   const [faculty, setFaculty] = useState(null);

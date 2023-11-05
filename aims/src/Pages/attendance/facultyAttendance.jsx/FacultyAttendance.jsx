@@ -36,7 +36,7 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
   }
 
   useEffect(() => {
-    getStudentByCourse({ courseId: selectedCourse?.id }).then((res)=>{
+    getStudentByCourse({ courseId: selectedCourse?.courseId }).then((res)=>{
       setRegisteredStudent(formatData(res))
     }).catch((err)=>{
       setRegisteredStudent(null);
@@ -107,7 +107,7 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
 
   const handleMarkAttendance = async ()=>{
     const payload = {
-      courseId: selectedCourse?.id,
+      courseId: selectedCourse?.courseId,
       attendance: registeredStudent?.map((student)=>{
         return {
           id: student?.studentId,

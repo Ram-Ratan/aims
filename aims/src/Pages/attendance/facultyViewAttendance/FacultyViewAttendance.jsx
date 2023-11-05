@@ -18,7 +18,7 @@ const FacultyViewAttendance = ({ selectedCourse, selectedDate }) => {
 
   useEffect(() => {
     const payload = {
-      courseId: selectedCourse?.id,
+      courseId: selectedCourse?.courseId,
       date: selectedDate,
     };
     setIsLoading(true);

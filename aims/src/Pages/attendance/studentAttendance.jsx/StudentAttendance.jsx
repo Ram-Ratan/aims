@@ -57,7 +57,7 @@ const StudentAttendance = ({selectedCourse, startDate, endDate}) => {
 
     const handleGetAttendance = async()=>{
       const payload = {
-        courseId: selectedCourse?.id,
+        courseId: selectedCourse?.courseId,
         startDate: startDate,
         endDate: endDate,
         userId: JSON.parse(localStorage.getItem("user"))?.id,

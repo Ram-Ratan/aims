@@ -6,6 +6,7 @@ import Button from "../../components/button/Button";
 import AttendanceTableHeader from "./attendanceTable/AttendanceTableHeader";
 import {
   getBranch,
+  getCourseRegisteredById,
   getCourses,
   getSem,
 } from "../../apiClient/courseRegistration";
@@ -13,6 +14,7 @@ import StudentAttendance from "./studentAttendance.jsx/StudentAttendance";
 import FacultyAttendance from "./facultyAttendance.jsx/FacultyAttendance";
 import Tabs from "../../components/tabs/Tabs";
 import FacultyViewAttendance from "./facultyViewAttendance/FacultyViewAttendance";
+import { getCourseAssignedById } from "../../apiClient/attendance";
 
 const Attendance = () => {
   const tabs = [
@@ -36,16 +38,40 @@ const Attendance = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-  useEffect(() => {
-    getCourses({ semesterId: selectedSem?.id, branchId: selectedBranch?.id })
-      .then((res) => {
-        setCourse(res);
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [selectedSem, selectedBranch]);
+  // useEffect(() => {
+  //   getCourses({ semesterId: selectedSem?.id, branchId: selectedBranch?.id })
+  //     .then((res) => {
+  //       setCourse(res);
+  //       console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, [selectedSem, selectedBranch]);
+
+    useEffect(() => {
+      const userId = JSON.parse(localStorage.getItem("user"))?.id;
+      const isStudent = JSON.parse(localStorage.getItem("user"))?.role === "STUDENT";
+      if(isStudent){
+        getCourseRegisteredById({ userId: userId })
+          .then((res) => {
+            setCourse(res?.courseRegistered);
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }else{
+        getCourseAssignedById({ userId: userId })
+          .then((res) => {
+            setCourse(res?.courseAssigned);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      
+    }, []);
 
   useEffect(() => {
     getBranch()
@@ -71,8 +97,8 @@ const Attendance = () => {
 
   const courseOptions = course?.map((course) => {
     return {
-      label: course?.name,
-      value: course?.id,
+      label: course?.course?.name,
+      value: course?.courseId,
       ...course,
     };
   });
@@ -118,14 +144,14 @@ const Attendance = () => {
       <div className="mx-32 pt-10">
         <div className="flex flex-col gap-4 border p-4 rounded-lg bg-gray-50 shadow-md">
           <div className="flex flex-col gap-2">
-            <div className="py-2">
+            {/* <div className="py-2">
               <h2 className="font-bold text-2xl">
                 Welcome! {JSON.parse(localStorage.getItem("user"))?.name}
               </h2>
-            </div>
+            </div> */}
             <div>
               <div className="flex gap-4">
-                <div className="min-w-[200px]">
+                {/* <div className="min-w-[200px]">
                   <Select
                     label="Select Semester"
                     className="flex flex-col"
@@ -137,8 +163,8 @@ const Attendance = () => {
                       setSelectedSem(e);
                     }}
                   />
-                </div>
-                <div className="min-w-[200px]">
+                </div> */}
+                {/* <div className="min-w-[200px]">
                   <Select
                     label="Select Branch"
                     className="flex flex-col"
@@ -150,7 +176,7 @@ const Attendance = () => {
                       setSelectedBranch(e);
                     }}
                   />
-                </div>
+                </div> */}
                 <div className="min-w-[200px]">
                   <Select
                     label="Select Course"
@@ -162,7 +188,7 @@ const Attendance = () => {
                     }}
                     isClearable
                     onClear={() => {
-                      console.log("clear");
+                      selectedCourse(null)
                     }}
                     required
                   />
