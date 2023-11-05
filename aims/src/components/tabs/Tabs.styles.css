@@ -1,0 +1,11 @@
+.selectedTab {
+    border-style: solid;
+    border-width: 3px;
+    -o-border-image: linear-gradient(to right, #ff1f71, #ff7700) 1;
+    border-image: linear-gradient(to right, #ff1f71, #ff7700) 1;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+}
+
+/*# sourceMappingURL=Tabs.styles.css.map */

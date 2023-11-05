@@ -11,8 +11,21 @@ import {
 } from "../../apiClient/courseRegistration";
 import StudentAttendance from "./studentAttendance.jsx/StudentAttendance";
 import FacultyAttendance from "./facultyAttendance.jsx/FacultyAttendance";
+import Tabs from "../../components/tabs/Tabs";
+import FacultyViewAttendance from "./facultyViewAttendance/FacultyViewAttendance";
 
 const Attendance = () => {
+  const tabs = [
+    {
+      id: 1,
+      tabLabel: "Mark Attendance",
+    },
+    {
+      id: 2,
+      tabLabel: "View Attendance",
+    },
+  ];
+  const [selectedTab, setSelectedTab] = useState(tabs[0].tabLabel);
   const [semester, setSemester] = useState(null);
   const [branch, setBranch] = useState(null);
   const [course, setCourse] = useState(null);
@@ -23,7 +36,6 @@ const Attendance = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-
   useEffect(() => {
     getCourses({ semesterId: selectedSem?.id, branchId: selectedBranch?.id })
       .then((res) => {
@@ -33,7 +45,7 @@ const Attendance = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [selectedSem,selectedBranch]);
+  }, [selectedSem, selectedBranch]);
 
   useEffect(() => {
     getBranch()
@@ -80,9 +92,14 @@ const Attendance = () => {
       ...sem,
     };
   });
+  const handleTab = (e) => {
+    setSelectedTab(e.tabLabel);
+  };
 
-
-  const isStudent = localStorage.getItem("user")!== "undefined"?JSON.parse(localStorage.getItem("user"))?.role ==="STUDENT": true;
+  const isStudent =
+    localStorage.getItem("user") !== "undefined"
+      ? JSON.parse(localStorage.getItem("user"))?.role === "STUDENT"
+      : true;
 
   const onDateChange = (event) => {
     setStartDate(event[0]);
@@ -176,6 +193,7 @@ const Attendance = () => {
               </div>
             </div>
           </div>
+
           {isStudent ? (
             <StudentAttendance
               selectedCourse={selectedCourse}
@@ -183,10 +201,25 @@ const Attendance = () => {
               endDate={endDate}
             />
           ) : (
-            <FacultyAttendance
-              selectedCourse={selectedCourse}
-              selectedDate={selectedDate}
-            />
+            <div>
+              <div className="mt-4">
+                <Tabs
+                  tabs={tabs}
+                  selectedTab={selectedTab}
+                  handleTab={handleTab}
+                />
+              </div>
+              {selectedTab === "Mark Attendance" ? (
+                <FacultyAttendance
+                  selectedCourse={selectedCourse}
+                  selectedDate={selectedDate}
+                />
+              ) : (
+                <div>
+                  <FacultyViewAttendance selectedCourse={selectedCourse} selectedDate={selectedDate}/>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>

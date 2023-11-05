@@ -127,47 +127,55 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
 
 
   return (
-    <div className="grid grid-cols-1">
-      <div className="overflow-x-auto">
-        <div className="w-full mb-2">
-          <div className="flex justify-end gap-4">
-            <Button variant="outlined" onClick={markAllPresent}>
-              All Present
-            </Button>
-            <Button variant="outlined" onClick={markAllAbsent}>
-              All Absent
+    <div className='mt-10'>
+      {registeredStudent && (
+        <div className="grid grid-cols-1">
+          <div className="overflow-x-auto">
+            <div className="w-full mb-2">
+              <div className="flex justify-end gap-4">
+                <Button variant="outlined" onClick={markAllPresent}>
+                  All Present
+                </Button>
+                <Button variant="outlined" onClick={markAllAbsent}>
+                  All Absent
+                </Button>
+              </div>
+            </div>
+            <table className="table-auto w-full">
+              <thead>
+                <tr>
+                  {columns.map((column) => (
+                    <th
+                      key={column.Header.props.name}
+                      className="bg-gray-200 border text-left p-2"
+                    >
+                      {column.Header}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {registeredStudent?.map((row, rowIndex) => (
+                  <tr key={row.rollNo}>
+                    {columns.map((column) => (
+                      <td key={column.Header.props.name} className="border p-2">
+                        {column.Cell
+                          ? column.Cell({ row })
+                          : row[column.accessor]}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="mt-10">
+            <Button variant="outlined" onClick={handleMarkAttendance}>
+              Mark Attendance
             </Button>
           </div>
         </div>
-        <table className="table-auto w-full">
-          <thead>
-            <tr>
-              {columns.map((column) => (
-                <th
-                  key={column.Header.props.name}
-                  className="bg-gray-200 border text-left p-2"
-                >
-                  {column.Header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {registeredStudent?.map((row, rowIndex) => (
-              <tr key={row.rollNo}>
-                {columns.map((column) => (
-                  <td key={column.Header.props.name} className="border p-2">
-                    {column.Cell ? column.Cell({ row }) : row[column.accessor]}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="mt-10">
-        <Button variant="outlined" onClick={handleMarkAttendance}>Mark Attendance</Button>
-      </div>
+      )}
     </div>
   );
 };
