@@ -3,8 +3,8 @@ import Button from '../../../components/button/Button';
 import AttendanceTableHeader from '../attendanceTable/AttendanceTableHeader';
 import Select from '../../../components/select/Select';
 import { getStudentByCourse, markAttendance } from '../../../apiClient/attendance';
-import {toast} from "react-toastify";
-import ToastNotify from '../../../components/toastNotify/ToastNotify';
+import {ToastContainer, toast} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
 
@@ -117,17 +117,24 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
       date: selectedDate
     }
 
-   
+    const showToastMessage = () => {
+      toast.success('Attendance marked', {
+          position: toast.POSITION.TOP_RIGHT
+      });
+    };
 
     await markAttendance(payload).then((res)=>{
+        showToastMessage();
     }).catch((err)=>{
-      toast.error("Some error occurred")
+      showToastMessage();
     })
   }
 
 
   return (
     <div className='mt-10'>
+    
+      <ToastContainer />
       {registeredStudent && (
         <div className="grid grid-cols-1">
           <div className="overflow-x-auto">
@@ -173,9 +180,11 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
             <Button variant="outlined" onClick={handleMarkAttendance}>
               Mark Attendance
             </Button>
+            
           </div>
         </div>
       )}
+      
     </div>
   );
 };
