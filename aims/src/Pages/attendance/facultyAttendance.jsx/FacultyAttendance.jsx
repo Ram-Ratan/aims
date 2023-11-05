@@ -117,18 +117,9 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
       date: selectedDate
     }
 
-    const onResponse = (message) => {
-      toast(<ToastNotify message={message} close={() => {}} />, {
-        onClose: () => {},
-        autoCloase: 2000,
-        className:
-          "toast-message absolute w-full h-full py-4 px-[30px] bg-white gap-4 flex flex-col border border-gray-200 shadow-md rounded-lg",
-        zIndex: 1000,
-      });
-    };
+   
 
     await markAttendance(payload).then((res)=>{
-      onResponse("hello")
     }).catch((err)=>{
       toast.error("Some error occurred")
     })

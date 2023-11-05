@@ -37,19 +37,18 @@ const CourseRegistration = () => {
       })
       .catch((err) => {
         console.log(err);
-      });
-  }, []);
+      })
+    },[branches])
 
-  useEffect(() => {
-    getSem()
-      .then((res) => {
-        setSem(res);
+    useEffect(()=>{
+      getSem().then((res)=>{
+        setSem(res)
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
-      });
-  }, []);
+      })
+    },[sem])
 
   const courseOptions = courses?.map((course) => {
     return {
