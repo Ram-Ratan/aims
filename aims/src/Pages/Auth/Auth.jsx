@@ -4,7 +4,7 @@ import { logIn, signUP } from '../../apiClient/auth';
 import { useNavigate } from 'react-router-dom';
 
 const Auth = () => {
-    const [isSignUp, setIsSignUp] = useState(true);
+    const [isSignUp, setIsSignUp] = useState(false);
     const [selectedRole, setSelectedRole] = useState('student'); // Initialize with 'student'
     const navigate = useNavigate();
 
