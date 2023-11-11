@@ -1,24 +1,18 @@
 import React,{useState,useEffect} from 'react'
-import Select from '../components/select/Select'
-import { getCourses,getBranch, getSem } from '../apiClient/courseRegistration';
+import Select from '../../components/select/Select'
+import StudentGrade from './StudentGrade';
+import { getCourses,getBranch, getSem } from '../../apiClient/courseRegistration';
+import { getCourseAssignedById } from '../../apiClient/attendance';
 
-const Grade = () => {
+const FacultyGrade = () => {
   const [semester,setSemester] = useState([]);
   const [branch,setBranch] = useState([]);
   const [exam,setExam] = useState([]);
   const [course,setCourse] = useState([]);
-
+  const [selectedCourse,setSelectedCourse] = useState(null);
+  const [selectedExam,setSelectedExam] = useState(null);
 
   //data fetching through api
-  // useEffect(()=>{
-  //   setExam().then((res)=>{
-  //     setExam(res)
-  //     console.log(res);
-  //   }).catch((error)=>{
-  //     console.log('error in exam api',error);
-  //   })
-  // },[exam])
-  
   useEffect(()=>{
     getBranch().then((res)=>{
       setBranch(res);
@@ -28,7 +22,7 @@ const Grade = () => {
   },[branch])
 
   useEffect(()=>{
-    getCourses().then((res)=>{
+    getCourses()?.then((res)=>{
       setCourse(res);
     }).catch((err)=>{
       console.log('error while fetching data from course api',err);
@@ -36,24 +30,39 @@ const Grade = () => {
   },[course])
 
   useEffect(()=>{
-    getSem().then((res)=>{
+    getSem()?.then((res)=>{
       setSemester(res)
     }).catch((err)=>{
       console.log('error while fetching data from semester api');
     })
   },[semester])
 
+  // fetching assigned course for faculty
+  useEffect(()=>{
+    const userId = JSON.parse(localStorage.getItem("user"))?.id;
+    const isFaculty = JSON.parse(localStorage.getItem('user'))?.role == "FACULTY";
+    console.log('faculty available');
+    if(isFaculty){
+      getCourseAssignedById({userId:userId})
+      .then((res)=>{
+        setCourse(res?.courseRegistered);
+        console.log(res);
+      }).catch((err)=>{
+        console.log(err);
+      })
+    }
+  },[])
 
   //select options
-  const examOptions = exam.map((exam) => {
+  const examOptions = exam?.map((exam) => {
     return {
-      label: exam.code,
-      value: exam.code,
+      label: exam?.code,
+      value: exam?.code,
       ...exam
     }
   }) 
 
-  const branchOptions = branch.map((branch)=>{
+  const branchOptions = branch?.map((branch)=>{
     return {
       label: branch?.name,
       value: branch?.code,
@@ -61,7 +70,7 @@ const Grade = () => {
     }
   })
 
-  const semesterOptions = semester.map((sem)=>{
+  const semesterOptions = semester?.map((sem)=>{
     return {
       label: sem?.name,
       value: sem?.code,
@@ -69,7 +78,7 @@ const Grade = () => {
     }
   })
 
-  const courseOptions = course.map((course)=>{
+  const courseOptions = course?.map((course)=>{
     return {
       label: course?.courseName,
       value: course?.courseCode,
@@ -95,12 +104,15 @@ const Grade = () => {
               label='Select Exam'
               options={examOptions}
               required={true}
-              value={exam}
-              onChange={(e) => setExam(e.target.value)}
-
+              value={selectedExam}
+              onChange={(e) => setSelectedExam(e.target.value)}
+              isClearable
+              onClear={() => {
+                selectedCourse(null)
+              }}
             />
           </div>
-          <div className='w-[140px]'>
+          {/* <div className='w-[140px]'>
             <Select 
               label='Select Branch'
               options={branchOptions}
@@ -117,21 +129,29 @@ const Grade = () => {
               value={semester}
               onChange={(e) => setSemester(e.target.value)}
             />
-          </div>
+          </div> */}
           <div className='w-[140px]'>
             <Select 
-              label='Select Course'
+              label="Select Course"
+              className="flex flex-col"
               options={courseOptions}
-              required={true}
-              value={course}
-              onChange={(e) => setCourse(e.target.value)}
+              value={selectedCourse}
+              onChange={(e) => {
+                setSelectedCourse(e);
+              }}
+              isClearable
+              onClear={() => {
+                selectedCourse(null)
+              }}
+              required
             />
           </div>
         </div>
         <div className='px-4 py-10'>  
-          <table className="table-auto w-full">
+          <table className="table-fixed w-full">
             <thead>
               <tr>
+                <th className="bg-gray-200 border text-left p-2 w-[70px]">Sr. No.</th>
                 <th className="bg-gray-200 border text-left p-2">Name</th>
                 <th className="bg-gray-200 border text-left p-2">Roll No.</th>
                 <th className="bg-gray-200 border text-left p-2">Marks</th>
@@ -139,25 +159,35 @@ const Grade = () => {
             </thead>
             <tbody>
               <tr>
+                <td className='border p-2'>1.</td>
                 <td className="border p-2">Prithvi Singh Bhati</td>
                 <td className="border p-2">20232</td>
-                <td className="border p-2">89</td>
+                <input 
+                  type='number'
+                  className='w-full px-2 py-2 border border-gray-300 focus:outline-none focus:border-gray-500' 
+                />
               </tr>
               <tr>
+                <td className='border p-2'>2.</td>
                 <td className="border p-2">Ram Ratan</td>
                 <td className="border p-2">20235</td>
-                <td className="border p-2">100</td>
+                <input 
+                  type='number'
+                  className='w-full px-2 py-2 border border-gray-300 focus:outline-none focus:border-gray-500'
+                />
               </tr>
             </tbody>
           </table>
         </div>  
       </div>
           
-      
+      <div>
+        <StudentGrade />
+      </div>
     
       
     </div>
   )
 }
 
-export default Grade
+export default FacultyGrade

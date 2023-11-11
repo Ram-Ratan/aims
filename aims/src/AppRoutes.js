@@ -2,13 +2,13 @@ import React from 'react'
 import Layouts from './layouts/Layouts';
 import { Route, Routes} from "react-router-dom";
 import About from "./Pages/about/About";
-import Grade from "./Pages/Grade"; 
+import Grade from "./Pages/Grade/Grade"; 
 import PersonalDetails from './Pages/personalDetails/PersonalDetails';
 import Home from './Pages/home/Home';
 import CourseRegistration from './Pages/courseRegistration/CourseRegistration';
 import Auth from './Pages/Auth/Auth';
 import Attendance from './Pages/attendance/Attendance';
-import Placement from './Pages/Placement';
+//import Placement from './Pages/Placement';
 
 const AppRoutes = () => {
   return (

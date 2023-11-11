@@ -18,6 +18,7 @@ const CourseRegistration = () => {
   const [selectedBranch, setSelectedBranch] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const navigate = useNavigate();
+  
   useEffect(() => {
     getCourses({ semesterId: selectedSem?.id, branchId: selectedBranch?.id })
       .then((res) => {

@@ -38,6 +38,6 @@ export const getCourseAssignedById = async (payload) => {
   let url = `${CONSTANT.API_URL}/course-assigned/course-assigned-by-id`;
   if (userId) url += `?id=${userId}`;
   const response = await axios.get(url, config);
-  console.log(response?.data);
+  //console.log(response?.data);
   return response?.data;
 };

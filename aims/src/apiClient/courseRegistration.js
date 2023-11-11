@@ -37,7 +37,7 @@ export const getSem = async () => {
   };
   const url = `${CONSTANT.API_URL}/semester/get-all-semester`;
   const response = await axios.get(url, config);
-  console.log(response?.data);
+  //console.log(response?.data);
   return response?.data;
 };
 
@@ -49,7 +49,7 @@ export const courseRegistration = async (payload) => {
   };
   const url = `${CONSTANT.API_URL}/course-registration/register`;
   const response = await axios.post(url,payload, config);
-  console.log(response?.data);
+  //console.log(response?.data);
   return response?.data;
 };
 
@@ -63,6 +63,6 @@ export const getCourseRegisteredById = async (payload) => {
   let url = `${CONSTANT.API_URL}/course-registration/course-registered-by-id`;
   if(userId) url += `?id=${userId}`;
   const response = await axios.get(url, config);
-  console.log(response?.data);
+  //console.log(response?.data);
   return response?.data;
 };

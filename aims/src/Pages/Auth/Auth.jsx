@@ -47,10 +47,10 @@ const Auth = () => {
           window.location.reload();
           showToastMessage("LoggedIn Successfully!");
         }else{
-          showErrorToastMessage("Enter Valid Username and Password");
+          showErrorToastMessage("Invalid Username or Password");
         }
       }).catch((err)=>{
-        showErrorToastMessage("Enter Valid Username and Password")
+        showErrorToastMessage("Invalid Username or Password")
       })
     }
 
