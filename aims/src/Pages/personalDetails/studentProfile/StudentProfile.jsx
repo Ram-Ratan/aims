@@ -6,6 +6,7 @@ const StudentProfile = () => {
   const [student, setStudent] = useState(null);
   const [courseRegistered, setCourseRegistered] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const userId = JSON.parse(localStorage.getItem("user"))?.id;
     setIsLoading(true);
