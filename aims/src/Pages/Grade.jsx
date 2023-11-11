@@ -1,7 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import Select from '../components/select/Select'
 import { getCourses,getBranch, getSem } from '../apiClient/courseRegistration';
-import StickyHeadTable from './home/Table';
 
 const Grade = () => {
   const [semester,setSemester] = useState([]);
