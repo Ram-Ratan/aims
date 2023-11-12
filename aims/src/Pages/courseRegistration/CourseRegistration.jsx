@@ -107,7 +107,7 @@ const CourseRegistration = () => {
       <div className="mx-32">
         <div className="border rounded-md h-24 shadow-md">
           <div className="flex justify-center py-7">
-            <p className="font-bold text-2xl">Personal Details</p>
+            <p className="font-bold text-2xl">Course Registration</p>
           </div>
         </div>
       </div>
