@@ -1,5 +1,6 @@
 // import TickIcon from "assets/svg/tickIcon";
 import React from "react";
+import TickIcon from "../../assets/svg/TickIcon";
 
 const Input = React.forwardRef(
   (
@@ -64,10 +65,11 @@ const Checkbox = React.forwardRef(
   )
 );
 // const CheckBoxProgram = ({ label, error, value, name, onChange }) => {
-const CheckBoxProgram = ({ label, error, id, checked, icon, ...rest }) => {
-  // const handleOnChange = (e) => {
-  //   onChange(e.target.checked);
-  // };
+const CheckBoxProgram = ({ label, error, id, checked, icon,onChange, ...rest }) => {
+  const handleCheckboxChange = (e) => {
+    e.stopPropagation();
+    onChange && onChange(e.target.checked);
+  };
 
   return (
     <>
@@ -77,6 +79,7 @@ const CheckBoxProgram = ({ label, error, id, checked, icon, ...rest }) => {
           type="checkbox"
           className="checked:accent-primaryLeft invisible"
           checked={checked}
+          onChange={handleCheckboxChange}
           {...rest}
         />
         <span
@@ -84,7 +87,7 @@ const CheckBoxProgram = ({ label, error, id, checked, icon, ...rest }) => {
             checked && "bg-gradient-to-br from-primaryLeft to-primaryRight"
           }`}
         >
-          {/* {checked && (icon || <TickIcon />)} */}
+          {checked && (icon || <TickIcon />)}
         </span>
         <span className="px-2 text-sm text-gray-600">{label}</span>
       </label>
