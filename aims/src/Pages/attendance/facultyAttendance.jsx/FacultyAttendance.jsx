@@ -16,7 +16,7 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
     },
     {
       label: "A",
-      value: true,
+      value: false,
     },
   ];
 
@@ -65,6 +65,7 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
               value={row.attendance}
               onChange={(e) => {
                 const newValue = e;
+                console.log('attendance checking',newValue);
                 const updatedData = registeredStudent?.map((student) => {
                   if (student?.rollNo === row?.rollNo) {
                     return { ...student, attendance: newValue };

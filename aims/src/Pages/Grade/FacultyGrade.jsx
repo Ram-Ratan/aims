@@ -244,7 +244,7 @@ const FacultyGrade = () => {
             </tbody>
           </table>
         </div>  
-        <div>
+        <div className='my-2'>
           <Button variant='outlined' onClick={handleSubmitMarks}>Submit Marks</Button>
         </div>
       </div>
