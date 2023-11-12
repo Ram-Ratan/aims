@@ -1,8 +1,17 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect,useMemo} from 'react'
 import Select from '../../components/select/Select'
+import AttendanceTableHeader from '../attendance/attendanceTable/AttendanceTableHeader';
+import { Input } from '../../components/input/Input';
 import StudentGrade from './StudentGrade';
 import { getCourses,getBranch, getSem } from '../../apiClient/courseRegistration';
-import { getCourseAssignedById } from '../../apiClient/attendance';
+import { getExam } from '../../apiClient/marks';
+import { getCourseAssignedById, getStudentByCourse } from '../../apiClient/attendance';
+import { submitMarks } from '../../apiClient/marks';
+import Button from '../../components/button/Button';
+import {ToastContainer, toast} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { showToastMessage,showErrorToastMessage } from '../utils/utils';
+
 
 const FacultyGrade = () => {
   const [semester,setSemester] = useState([]);
@@ -12,46 +21,56 @@ const FacultyGrade = () => {
   const [selectedCourse,setSelectedCourse] = useState(null);
   const [selectedExam,setSelectedExam] = useState(null);
 
-  //data fetching through api
-  useEffect(()=>{
-    getBranch().then((res)=>{
-      setBranch(res);
-    }).catch((error)=>{
-      console.log('error while fetching data from branch api',error);
-    })
-  },[branch])
+  const [registeredStudent,setRegisteredStudent] = useState([]);
 
+  const formatData = (data) => {
+    return data?.map((student) => {
+      return {
+        rollNo: student?.student?.rollNo,
+        name: student?.student?.fullName,
+        marks: 0, // Default value for marks, you can adjust it as needed
+        ...student,
+      };
+    });
+  };
+
+  //fetching exam type
   useEffect(()=>{
-    getCourses()?.then((res)=>{
-      setCourse(res);
+    getExam()?.then((res)=>{
+      setExam(res.data)
+      console.log(res);
+      console.log('exam data received');
     }).catch((err)=>{
-      console.log('error while fetching data from course api',err);
+      console.log(err);
     })
-  },[course])
-
-  useEffect(()=>{
-    getSem()?.then((res)=>{
-      setSemester(res)
-    }).catch((err)=>{
-      console.log('error while fetching data from semester api');
-    })
-  },[semester])
-
+  },[])
   // fetching assigned course for faculty
   useEffect(()=>{
     const userId = JSON.parse(localStorage.getItem("user"))?.id;
-    const isFaculty = JSON.parse(localStorage.getItem('user'))?.role == "FACULTY";
-    console.log('faculty available');
+    const isFaculty = JSON.parse(localStorage.getItem('user'))?.role === "FACULTY";
+    //if(isFaculty) console.log('faculty available');
     if(isFaculty){
       getCourseAssignedById({userId:userId})
       .then((res)=>{
-        setCourse(res?.courseRegistered);
-        console.log(res);
+        console.log(res.courseAssigned);
+        setCourse(res?.courseAssigned);
+        console.log('courses data received');
       }).catch((err)=>{
         console.log(err);
       })
     }
   },[])
+
+  //fetching all registered users
+  useEffect(()=>{
+    getStudentByCourse({courseId:selectedCourse?.courseId})
+    .then((res)=>{
+      setRegisteredStudent(formatData(res))
+    }).catch((err)=>{
+      //console.log('not received');
+      setRegisteredStudent(null);
+    })
+  },[selectedCourse])
 
   //select options
   const examOptions = exam?.map((exam) => {
@@ -80,15 +99,74 @@ const FacultyGrade = () => {
 
   const courseOptions = course?.map((course)=>{
     return {
-      label: course?.courseName,
-      value: course?.courseCode,
+      label: course?.course.name,
+      value: course?.course.courseId,
       ...course
     }
   })
 
+  const columns = useMemo(
+    () => [
+      {
+        Header: <AttendanceTableHeader name="Roll No." HeaderKey="" />,
+        accessor: "rollNo",
+      },
+      {
+        Header: <AttendanceTableHeader name="Name" HeaderKey="" />,
+        accessor: "name",
+      },
+      {
+        Header: <AttendanceTableHeader name="Marks" HeaderKey="" />,
+        accessor: "marks",
+        Cell: ({ row }) => (
+          <div className="">
+            <input
+              type="number"
+              value={row.marks}
+              onChange={(e) => {
+                const newValue = parseInt(e.target.value, 10);
+                const updatedData = registeredStudent?.map((student) => {
+                  if (student?.rollNo === row?.rollNo) {
+                    return { ...student, marks: newValue };
+                  }
+                  return student;
+                });
+                console.log('updateData', updatedData);
+                setRegisteredStudent(updatedData);
+              }}
+              className="mx-4"
+            />
+          </div>
+        ),
+      },
+    ],
+    [registeredStudent]
+  );
+  
+  const handleSubmitMarks = async () =>{
+    
+    console.log('checking student id',registeredStudent);
+    const payload = {
+      examId: selectedExam.id,
+      courseId: selectedCourse?.courseId,
+      marks: registeredStudent?.map((student)=>{
+        return {
+          studentId: student?.studentId,
+          marksObtained: student?.marks,
+          remarks:'need improvement'
+        }
+      })
+    }
+    await submitMarks(payload).then((res)=>{
+      showToastMessage("Marks uploaded Successfully!");
+    }).catch((err)=>{
+      showErrorToastMessage("Marks upload Failed");
+    })
+  }
 
   return (
     <div>
+      <ToastContainer />
       <div 
         className='mx-32 my-4 flex justify-center items-center text-3xl font-semibold border rounded-md h-20 shadow-md'
       >
@@ -105,31 +183,14 @@ const FacultyGrade = () => {
               options={examOptions}
               required={true}
               value={selectedExam}
-              onChange={(e) => setSelectedExam(e.target.value)}
+              onChange={(e) => setSelectedExam(e)}
               isClearable
               onClear={() => {
-                selectedCourse(null)
+                selectedExam(null)
               }}
             />
           </div>
-          {/* <div className='w-[140px]'>
-            <Select 
-              label='Select Branch'
-              options={branchOptions}
-              required={true}
-              value={branch}
-              onChange={(e) => setBranch(e.target.value)}
-            />
-          </div>
-          <div className='w-[140px]'>
-            <Select 
-              label='Select Semester'
-              options={semesterOptions}
-              required={true}
-              value={semester}
-              onChange={(e) => setSemester(e.target.value)}
-            />
-          </div> */}
+          
           <div className='w-[140px]'>
             <Select 
               label="Select Course"
@@ -148,7 +209,7 @@ const FacultyGrade = () => {
           </div>
         </div>
         <div className='px-4 py-10'>  
-          <table className="table-fixed w-full">
+        <table className="table-fixed w-full">
             <thead>
               <tr>
                 <th className="bg-gray-200 border text-left p-2 w-[70px]">Sr. No.</th>
@@ -158,33 +219,35 @@ const FacultyGrade = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className='border p-2'>1.</td>
-                <td className="border p-2">Prithvi Singh Bhati</td>
-                <td className="border p-2">20232</td>
-                <input 
-                  type='number'
-                  className='w-full px-2 py-2 border border-gray-300 focus:outline-none focus:border-gray-500' 
-                />
-              </tr>
-              <tr>
-                <td className='border p-2'>2.</td>
-                <td className="border p-2">Ram Ratan</td>
-                <td className="border p-2">20235</td>
-                <input 
-                  type='number'
-                  className='w-full px-2 py-2 border border-gray-300 focus:outline-none focus:border-gray-500'
-                />
-              </tr>
+              {registeredStudent?.map((student, index) => (
+                <tr key={student.rollNo}>
+                  <td className="border p-2">{index + 1}.</td>
+                  <td className="border p-2">{student.name}</td>
+                  <td className="border p-2">{student.rollNo}</td>
+                  <td className="border p-2">
+                    <Input
+                      type="number"
+                      value={student.marks}
+                      onChange={(e) => {
+                        const newValue = parseInt(e.target.value, 10);
+                        const updatedData = registeredStudent.map((stu) =>
+                          stu.rollNo === student.rollNo ? { ...stu, marks: newValue } : stu
+                        );
+                        console.log('updateData', updatedData);
+                        setRegisteredStudent(updatedData);
+                      }}
+                      className="w-full px-2 py-2 border border-gray-300 focus:outline-none focus:border-gray-500"
+                    />
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>  
+        <div>
+          <Button variant='outlined' onClick={handleSubmitMarks}>Submit Marks</Button>
+        </div>
       </div>
-          
-      <div>
-        <StudentGrade />
-      </div>
-    
       
     </div>
   )

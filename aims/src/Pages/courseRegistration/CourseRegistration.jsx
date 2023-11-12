@@ -25,7 +25,7 @@ const CourseRegistration = () => {
     getCourses({ semesterId: selectedSem?.id, branchId: selectedBranch?.id })
       .then((res) => {
         setCourses(res);
-        console.log(res);
+        //console.log(res);
       })
       .catch((err) => {
         console.log(err);

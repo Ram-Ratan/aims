@@ -66,3 +66,5 @@ export const getCourseRegisteredById = async (payload) => {
   //console.log(response?.data);
   return response?.data;
 };
+
+
