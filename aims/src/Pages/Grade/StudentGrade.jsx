@@ -1,15 +1,45 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import { getCourseRegisteredById } from '../../apiClient/courseRegistration'
 import Select from '../../components/select/Select'
+import { getExam, getMarks } from '../../apiClient/marks';
+import { useAsyncError } from 'react-router-dom';
 
 
 const StudentGrade = () => {
     const [exam,setExam] = useState(null);
+    const [selectedExam,setSelectedExam] = useState(null);
+    const [marks,setMarks] = useState();
+
+
+    const arr = [
+
+    ]
+
+    useEffect(()=>{
+        getExam()?.then((res)=>{
+            console.log('exam type',res.data);
+            setExam(res.data);
+        }).catch((err)=>{
+            console.log(err);
+        })
+    },[])
+
+    useEffect(()=>{
+        const userId = JSON.parse(localStorage.getItem("user"))?.id;
+        console.log('exam checking',selectedExam);
+        getMarks({examId:selectedExam?.id, studentId:userId})
+        .then((res)=>{
+            console.log('marks api data checking',res.data);
+            setMarks(res.data);
+        }).catch((err)=>{
+            console.log(err);
+        })
+    },[selectedExam])
 
     const examOptions = exam?.map((exam) => {
         return {
-          label: exam.code,
-          value: exam.code,
+          label: exam?.code,
+          value: exam?.code,
           ...exam
         }
     }) 
@@ -27,8 +57,12 @@ const StudentGrade = () => {
                         label='Select Exam'
                         options={examOptions}
                         required={true}
-                        value={exam}
-                        onChange={(e) => setExam(e.target.value)}
+                        value={selectedExam}
+                        onChange={(e) => setSelectedExam(e)}
+                        isClearable
+                        onClear={() => {
+                            selectedExam(null)
+                        }}
                     />
                 </div>
                 <div className='px-4 py-10'>
@@ -41,11 +75,16 @@ const StudentGrade = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td className='border p-2'>VLSI Design</td>
-                                <td className='border p-2'>65</td>
-                                <td className='border p-2'>100</td>
-                            </tr>
+                            {
+                                marks?.map((data)=>(
+                                    <tr key={data?.courseId}>
+                                        <td className="border p-2">{data?.course?.name}</td> 
+                                        <td className="border p-2">{data?.marksObtained}</td>
+                                        <td className="border p-2">{selectedExam?.code == ("CT1" || "CT2") ? 20 : 100}</td>
+
+                                    </tr>
+                                ))
+                            }
                         </tbody>
                     </table>
                 </div>

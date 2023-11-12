@@ -107,6 +107,7 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
 
 
   const handleMarkAttendance = async ()=>{
+    
     const payload = {
       courseId: selectedCourse?.courseId,
       attendance: registeredStudent?.map((student)=>{
