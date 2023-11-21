@@ -11,10 +11,6 @@ const StudentGrade = () => {
     const [marks,setMarks] = useState();
 
 
-    const arr = [
-
-    ]
-
     useEffect(()=>{
         getExam()?.then((res)=>{
             console.log('exam type',res.data);
