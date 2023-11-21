@@ -16,7 +16,7 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
     },
     {
       label: "A",
-      value: true,
+      value: false,
     },
   ];
 
