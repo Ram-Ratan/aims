@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, {useMemo, useState } from 'react'
 import AttendanceTableHeader from '../attendanceTable/AttendanceTableHeader';
-import Select from '../../../components/select/Select';
 import { attendanceByCourseAndDate } from '../../../apiClient/attendance';
 import Button from '../../../components/button/Button';
+import { formatDate } from '../../utils/utils';
 
 
 
@@ -13,13 +13,6 @@ const StudentAttendance = ({selectedCourse, startDate, endDate}) => {
 
   const [attendanceData, setAttendanceData] = useState(null);
 
-  function formatDate(inputDateString) {
-    const inputDate = new Date(inputDateString); // Parse the input date string
-    const day = inputDate.getUTCDate().toString().padStart(2, "0"); // Get day and pad with leading zero if necessary
-    const month = (inputDate.getUTCMonth() + 1).toString().padStart(2, "0"); // Get month (months are zero-based) and pad with leading zero if necessary
-    const year = inputDate.getUTCFullYear(); // Get the year
-    return `${day}-${month}-${year}`; // Format the date as "dd-MM-yyyy"
-  }
     const columns = useMemo(
       () => [
         {
