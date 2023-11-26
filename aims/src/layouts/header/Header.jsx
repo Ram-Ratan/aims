@@ -20,10 +20,10 @@ function Header() {
 
       {/* User Avatar */}
       <div className="flex items-center gap-4 cursor-pointer">
-        {localStorage.getItem("user") ? (
+        {localStorage.getItem("authToken") ? (
           <div
             onClick={() => {
-              localStorage.removeItem("user");
+              localStorage.removeItem("authToken");
               navigate("/login")
               window.location.reload();
             }}

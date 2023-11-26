@@ -24,7 +24,7 @@ export const signUP =async (payload)=>{
 }
 
 export const logIn = async (payload) => {
-  const url = `${CONSTANT.API_URL}/user/get-user`;
+  const url = `${CONSTANT.API_URL}/user/login`;
   const response = axios
     .post(url, payload,config);
     return response;

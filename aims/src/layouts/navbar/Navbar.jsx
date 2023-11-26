@@ -7,7 +7,7 @@ function Navbar() {
   return (
     <nav className="bg-gray-50 p-4 h-screen w-52 overflow-y-auto fixed top-14">
       <div>
-        {localStorage.getItem("user") ? (
+        {localStorage.getItem("authToken") ? (
           <ul>
             <li>
               <NavLink

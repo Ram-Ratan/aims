@@ -22,7 +22,7 @@ const Auth = () => {
       const role = e.target?.role?.value;
       const password = e.target.password.value;
       const logInPayload = {
-        "username":email,
+        "email":email,
         "password": password
       }
       // const payload = {
@@ -42,7 +42,7 @@ const Auth = () => {
       }): await logIn(logInPayload).then((res)=>{
         console.log('res',res)
         if(res?.data){
-          localStorage.setItem("user", JSON.stringify(res?.data));
+          localStorage.setItem("authToken", JSON.stringify(res.data?.token));
           navigate("/");
           window.location.reload();
           showToastMessage("LoggedIn Successfully!");
