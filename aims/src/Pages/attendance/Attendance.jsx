@@ -38,17 +38,6 @@ const Attendance = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-  // useEffect(() => {
-  //   getCourses({ semesterId: selectedSem?.id, branchId: selectedBranch?.id })
-  //     .then((res) => {
-  //       setCourse(res);
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, [selectedSem, selectedBranch]);
-
     useEffect(() => {
       const userId = JSON.parse(localStorage.getItem("user"))?.id;
       const isStudent = JSON.parse(localStorage.getItem("user"))?.role === "STUDENT";
