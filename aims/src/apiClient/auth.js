@@ -6,7 +6,7 @@ let config = {
   },
 };
 export const signUP =async (payload)=>{
-  const url = `${CONSTANT.API_URL}/user/get-user`;
+  const url = `${CONSTANT.API_URL}/user/signup`;
     const response = await axios
       .post(
         url,
@@ -14,7 +14,6 @@ export const signUP =async (payload)=>{
       )
       .then((response) => {
         console.log(response.data);
-        localStorage.setItem("user", JSON.stringify(response?.data));
       })
       .catch((error) => {
         console.error("Error:", error);

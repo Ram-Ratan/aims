@@ -92,6 +92,16 @@ function Navbar() {
                 About
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                exact="true"
+                to="/add-user"
+                activeClassName="active"
+                className="block text-md text-black p-2"
+              >
+                Add New User
+              </NavLink>
+            </li>
           </ul>
         )}
       </div>
