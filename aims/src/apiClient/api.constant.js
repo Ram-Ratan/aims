@@ -1,1 +1,1 @@
-export const API_URL = "https://30eb-220-158-168-162.ngrok-free.app";
+export const API_URL = "https://aims-cnvz.onrender.com";
