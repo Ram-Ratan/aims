@@ -14,8 +14,6 @@ import { showToastMessage,showErrorToastMessage } from '../utils/utils';
 
 
 const FacultyGrade = () => {
-  const [semester,setSemester] = useState([]);
-  const [branch,setBranch] = useState([]);
   const [exam,setExam] = useState([]);
   const [course,setCourse] = useState([]);
   const [selectedCourse,setSelectedCourse] = useState(null);
@@ -46,19 +44,13 @@ const FacultyGrade = () => {
   },[])
   // fetching assigned course for faculty
   useEffect(()=>{
-    const userId = JSON.parse(localStorage.getItem("user"))?.id;
-    const isFaculty = JSON.parse(localStorage.getItem('user'))?.role === "FACULTY";
-    //if(isFaculty) console.log('faculty available');
-    if(isFaculty){
-      getCourseAssignedById({userId:userId})
+      getCourseAssignedById()
       .then((res)=>{
         console.log(res.courseAssigned);
         setCourse(res?.courseAssigned);
-        console.log('courses data received');
       }).catch((err)=>{
         console.log(err);
       })
-    }
   },[])
 
   //fetching all registered users
@@ -81,21 +73,6 @@ const FacultyGrade = () => {
     }
   }) 
 
-  const branchOptions = branch?.map((branch)=>{
-    return {
-      label: branch?.name,
-      value: branch?.code,
-      ...branch
-    }
-  })
-
-  const semesterOptions = semester?.map((sem)=>{
-    return {
-      label: sem?.name,
-      value: sem?.code,
-      ...sem
-    }
-  })
 
   const courseOptions = course?.map((course)=>{
     return {
@@ -105,43 +82,7 @@ const FacultyGrade = () => {
     }
   })
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: <AttendanceTableHeader name="Roll No." HeaderKey="" />,
-        accessor: "rollNo",
-      },
-      {
-        Header: <AttendanceTableHeader name="Name" HeaderKey="" />,
-        accessor: "name",
-      },
-      {
-        Header: <AttendanceTableHeader name="Marks" HeaderKey="" />,
-        accessor: "marks",
-        Cell: ({ row }) => (
-          <div className="">
-            <input
-              type="number"
-              value={row.marks}
-              onChange={(e) => {
-                const newValue = parseInt(e.target.value, 10);
-                const updatedData = registeredStudent?.map((student) => {
-                  if (student?.rollNo === row?.rollNo) {
-                    return { ...student, marks: newValue };
-                  }
-                  return student;
-                });
-                console.log('updateData', updatedData);
-                setRegisteredStudent(updatedData);
-              }}
-              className="mx-4"
-            />
-          </div>
-        ),
-      },
-    ],
-    [registeredStudent]
-  );
+
   
   const handleSubmitMarks = async () =>{
     

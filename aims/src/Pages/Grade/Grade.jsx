@@ -1,15 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import StudentGrade from './StudentGrade';
 import FacultyGrade from './FacultyGrade';
+import { getUser } from '../../apiClient/user';
 
 const Grade = () => {
-    const userId = JSON.parse(localStorage.getItem("user"))?.id;
-    const isStudent = JSON.parse(localStorage.getItem("user"))?.role === "STUDENT";
+    const [role, setRole] = useState(null);
+
+      useEffect(() => {
+        getUser()
+          .then((res) => {
+            setRole(res?.data?.role);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }, []);
     return (
-        <div>
-            {isStudent ? <StudentGrade /> : <FacultyGrade />}
-        </div>
-    )
+      <div>
+        {role === "STUDENT" && <StudentGrade />}
+        {role === "FACULTY" && <FacultyGrade />}
+      </div>
+    );
 }
 
 export default Grade

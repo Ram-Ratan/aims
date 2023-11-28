@@ -1,19 +1,12 @@
 import React,{useState, useEffect} from 'react'
-import { getCourseRegisteredById } from '../../apiClient/courseRegistration'
 import Select from '../../components/select/Select'
 import { getExam, getMarks } from '../../apiClient/marks';
-import { useAsyncError } from 'react-router-dom';
 
 
 const StudentGrade = () => {
     const [exam,setExam] = useState(null);
     const [selectedExam,setSelectedExam] = useState(null);
     const [marks,setMarks] = useState();
-
-
-    const arr = [
-
-    ]
 
     useEffect(()=>{
         getExam()?.then((res)=>{
@@ -25,9 +18,8 @@ const StudentGrade = () => {
     },[])
 
     useEffect(()=>{
-        const userId = JSON.parse(localStorage.getItem("user"))?.id;
         console.log('exam checking',selectedExam);
-        getMarks({examId:selectedExam?.id, studentId:userId})
+        getMarks({examId:selectedExam?.id})
         .then((res)=>{
             console.log('marks api data checking',res.data);
             setMarks(res.data);
@@ -80,7 +72,7 @@ const StudentGrade = () => {
                                     <tr key={data?.courseId}>
                                         <td className="border p-2">{data?.course?.name}</td> 
                                         <td className="border p-2">{data?.marksObtained}</td>
-                                        <td className="border p-2">{selectedExam?.code == ("CT1" || "CT2") ? 20 : 100}</td>
+                                        <td className="border p-2">{selectedExam?.code === ("CT1" || "CT2") ? 20 : 100}</td>
 
                                     </tr>
                                 ))
