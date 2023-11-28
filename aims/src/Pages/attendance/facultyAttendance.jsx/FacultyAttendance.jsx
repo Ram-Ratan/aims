@@ -1,14 +1,19 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import Button from '../../../components/button/Button';
-import AttendanceTableHeader from '../attendanceTable/AttendanceTableHeader';
-import Select from '../../../components/select/Select';
-import { getStudentByCourse, markAttendance } from '../../../apiClient/attendance';
-import {ToastContainer, toast} from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
-import { showErrorToastMessage, showToastMessage } from '../../utils/utils';
+import React, { useEffect, useMemo, useState } from "react";
+import Button from "../../../components/button/Button";
+import AttendanceTableHeader from "../attendanceTable/AttendanceTableHeader";
+import Select from "../../../components/select/Select";
+import {
+  getStudentByCourse,
+  markAttendance,
+  updateAttendance,
+  viewAttendanceByCourseAndDate,
+} from "../../../apiClient/attendance";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ModalPopup from "../../../layouts/modalPopUp/ModalPopUp";
+import { showErrorToastMessage, showToastMessage } from "../../utils/utils";
 
 const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
-
   const attendanceOption = [
     {
       label: "P",
@@ -21,29 +26,32 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
   ];
 
   const [registeredStudent, setRegisteredStudent] = useState(null);
+  const [isModal, setIsModal] = useState(true);
 
-  const formatData = (data)=>{
-    return data?.map((student)=>{
+  const formatData = (data) => {
+    return data?.map((student) => {
       return {
         rollNo: student?.student?.rollNo,
         name: student?.student?.fullName,
         attendance: {
           label: "A",
-          value: false
+          value: false,
         },
-        ...student
-      }
-    })
-  }
+        ...student,
+      };
+    });
+  };
 
   useEffect(() => {
-    getStudentByCourse({ courseId: selectedCourse?.courseId }).then((res)=>{
-      setRegisteredStudent(formatData(res))
-    }).catch((err)=>{
-      setRegisteredStudent(null);
-      console.log(err);
-    })
-  },[selectedCourse]);
+    getStudentByCourse({ courseId: selectedCourse?.courseId })
+      .then((res) => {
+        setRegisteredStudent(formatData(res));
+      })
+      .catch((err) => {
+        setRegisteredStudent(null);
+        console.log(err);
+      });
+  }, [selectedCourse]);
 
   const columns = useMemo(
     () => [
@@ -71,7 +79,7 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
                   }
                   return student;
                 });
-                console.log('updateData',updatedData);
+                console.log("updateData", updatedData);
                 setRegisteredStudent(updatedData);
               }}
               className="mx-4"
@@ -80,7 +88,7 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
         ),
       },
     ],
-    [registeredStudent, attendanceOption]
+    [registeredStudent]
   );
 
   const markAllPresent = () => {
@@ -105,30 +113,65 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
     setRegisteredStudent(updatedData);
   };
 
+  const handleMarkAttendance = async () => {
+    try {
+      const viewPayload = {
+        courseId: selectedCourse?.courseId,
+        date: selectedDate,
+      };
+      const res = await viewAttendanceByCourseAndDate(viewPayload);
+      if (res.length) {
+        setIsModal(true);
+      } else {
+        await markNewAttendance();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  const handleMarkAttendance = async ()=>{
-    
+  const markNewAttendance = async () => {
     const payload = {
       courseId: selectedCourse?.courseId,
-      attendance: registeredStudent?.map((student)=>{
+      attendance: registeredStudent?.map((student) => {
         return {
           id: student?.studentId,
           isPresent: student?.attendance?.value,
-        }
+        };
       }),
-      date: selectedDate
-    }
-    await markAttendance(payload).then((res)=>{
+      date: selectedDate,
+    };
+    await markAttendance(payload)
+      .then((res) => {
         showToastMessage("Attendance Marked Successfully!");
-    }).catch((err)=>{
-      showErrorToastMessage("Attendance Failed");
-    })
-  }
+      })
+      .catch((err) => {
+        showErrorToastMessage("Attendance Failed");
+      });
+  };
 
+  const handleUpdateAttendance = async () => {
+    const payload = {
+      courseId: selectedCourse?.courseId,
+      attendance: registeredStudent?.map((student) => {
+        return {
+          id: student?.studentId,
+          isPresent: student?.attendance?.value,
+        };
+      }),
+      date: selectedDate,
+    };
+    await updateAttendance(payload)
+      .then((res) => {
+        showToastMessage("Attendance Updated Successfully!");
+      })
+      .catch((err) => {
+        showErrorToastMessage("Attendance Failed");
+      });
+  };
 
   return (
-    <div className='mt-10'>
-    
+    <div className="mt-10">
       <ToastContainer />
       {registeredStudent && (
         <div className="grid grid-cols-1">
@@ -175,13 +218,33 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
             <Button variant="outlined" onClick={handleMarkAttendance}>
               Mark Attendance
             </Button>
-            
           </div>
         </div>
       )}
-      
+
+      {isModal && (
+        <ModalPopup
+          title="Attendance of This date is already marked. Do You want to update?"
+          body={
+            <div className="p-5 pt-0">
+              <div className="mt-3 flex justify-center">
+                <Button
+                  variant="filled"
+                  onClick={() => {
+                    handleUpdateAttendance();
+                    setIsModal(false);
+                  }}
+                >
+                  Yes
+                </Button>
+              </div>
+            </div>
+          }
+          onClose={() => setIsModal(false)}
+        />
+      )}
     </div>
   );
 };
 
-export default FacultyAttendance
+export default FacultyAttendance;

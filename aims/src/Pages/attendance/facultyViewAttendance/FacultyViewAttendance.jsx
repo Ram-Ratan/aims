@@ -51,7 +51,7 @@ const FacultyViewAttendance = ({ selectedCourse, selectedDate }) => {
         </div>,
       },
     ],
-    [attendanceData]
+    []
   );
   return (
     <div className="mt-10">

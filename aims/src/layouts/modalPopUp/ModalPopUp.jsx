@@ -1,4 +1,4 @@
-import { XMarkIcon } from "@heroicons/react/24/solid";
+// import { XMarkIcon } from "@heroicons/react/24/solid";
 import React from "react";
 
 const ModalPopup = ({
@@ -12,7 +12,7 @@ const ModalPopup = ({
   width,
 }) => {
   return (
-    <div className="fixed z-[53] inset-0 bg-backdrop ">
+    <div className="fixed z-[53] inset-0 bg-[rgba(0,0,0,0.3)]">
       <div className="flex items-center justify-center min-h-screen px-4 w-full">
         <div
           className={`bg-white rounded-lg shadow-md relative   pb-4 ${
@@ -25,7 +25,8 @@ const ModalPopup = ({
               className="flex justify-end items-end top-0 right-0 p-2 text-gray-500 hover:text-gray-700"
               onClick={onClose}
             >
-              <XMarkIcon className="w-5 h-5" />
+              <p className="w-5 h-5">X</p>
+              {/* <XMarkIcon /> */}
             </button>
           </div>
           <div

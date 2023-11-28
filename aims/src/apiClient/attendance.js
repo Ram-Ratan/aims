@@ -22,6 +22,12 @@ export const markAttendance = async (payload) => {
   return response?.data;
 };
 
+export const updateAttendance = async (payload) => {
+  let url = `${CONSTANT.API_URL}/attendance/update-attendance`;
+  const response = await axios.post(url, payload, config);
+  return response?.data;
+};
+
 
 export const attendanceByCourseAndDate = async (payload) => {
   let url = `${CONSTANT.API_URL}/attendance/attendance-by-course-date-id`;
