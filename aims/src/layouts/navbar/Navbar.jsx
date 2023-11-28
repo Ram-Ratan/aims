@@ -68,6 +68,10 @@ function Navbar() {
       link: "/add-user",
       label: "Add New User",
     },
+    {
+      link: "/course-assignment",
+      label: "Course Assignment",
+    },
   ];
 
   const defaultNav = [

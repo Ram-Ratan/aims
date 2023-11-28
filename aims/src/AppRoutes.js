@@ -9,6 +9,7 @@ import CourseRegistration from './Pages/courseRegistration/CourseRegistration';
 import Auth from './Pages/Auth/Auth';
 import Attendance from './Pages/attendance/Attendance';
 import AddUser from './Pages/addUser/AddUser';
+import FacultyCourseAssignment from './Pages/facultyCourseAssignment/FacultyCourseAssignment';
 //import Placement from './Pages/Placement';
 
 const AppRoutes = () => {
@@ -23,6 +24,7 @@ const AppRoutes = () => {
         <Route path="/course-registration" element={<CourseRegistration />} />
         <Route path="/attendance" element={<Attendance />} />
         <Route path="/add-user" element={<AddUser />} />
+        <Route path="/course-assignment" element={<FacultyCourseAssignment />} />
         {/* <Route path='placement' element={<Placement />} /> */}
         {/* Add more routes for other pages */}
       </Routes>

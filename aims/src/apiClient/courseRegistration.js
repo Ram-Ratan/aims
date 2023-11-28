@@ -6,14 +6,18 @@ export const getCourses = async (payload) => {
   let config = {
     headers: {
       "ngrok-skip-browser-warning": 69420,
+      Authorization: `Bearer ${authToken}`,
     },
   };
-  const {semesterId, branchId} = payload
+  const semesterId = payload?.semesterId;
+  const branchId = payload?.branchId;
+
   let url = `${CONSTANT.API_URL}/course/get-all-courses`;
   if(semesterId) url += `?semesterId=${semesterId}`;
   if(branchId) semesterId
     ? (url += `&branchId=${branchId}`)
     : (url += `?branchId=${branchId}`);
+    console.log(url);
   const response = await axios.get(url, config);
   return response?.data;
 };

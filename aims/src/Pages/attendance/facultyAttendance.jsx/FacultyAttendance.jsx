@@ -8,7 +8,7 @@ import {
   updateAttendance,
   viewAttendanceByCourseAndDate,
 } from "../../../apiClient/attendance";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ModalPopup from "../../../layouts/modalPopUp/ModalPopUp";
 import { showErrorToastMessage, showToastMessage } from "../../utils/utils";

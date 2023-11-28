@@ -5,6 +5,8 @@ import Select from "../../components/select/Select";
 import Button from "../../components/button/Button";
 import { getBranch, getSem } from "../../apiClient/courseRegistration";
 import { signUP } from "../../apiClient/auth";
+import { ToastContainer } from "react-toastify";
+import { showErrorToastMessage, showToastMessage } from "../utils/utils";
 
 
 const roleOptions = [
@@ -94,20 +96,20 @@ const AddUser = () => {
         payload.admin = admin;
       }
       await signUP(payload).then((res)=> {
-        console.log(res);
+        showToastMessage("User Added Successfully!");
       }).catch((err)=>{
+        showErrorToastMessage("Failed");
         console.log(err);
       })
-      console.log(payload);
     } catch (error) {
       console.error("Error during signup:", error);
     }
   };
 
-  console.log("Watched Fields:", watchedFields);
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-md shadow-md my-20">
+      <ToastContainer />
       <h2 className="text-2xl font-semibold mb-4">Sign Up</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
