@@ -149,12 +149,12 @@ const FacultyGrade = () => {
     <div>
       <ToastContainer />
       <div className="mx-32 my-4 flex justify-center items-center text-3xl font-semibold border rounded-md h-20 shadow-md">
-        Grade Updation
+        Grade Upload
       </div>
 
-      <div className="mt-10 mx-32 border rounded-lg bg-gray-50 shadow-lg">
-        <div className="flex justify-around pt-3">
-          <div className="w-[140px]">
+      <div className="mt-10 pb-10 mx-32 border rounded-lg bg-gray-50 shadow-lg">
+        <div className="flex gap-4 pt-3 px-4">
+          <div className="w-[200px]">
             <Select
               label="Select Exam"
               options={examOptions}
@@ -168,7 +168,7 @@ const FacultyGrade = () => {
             />
           </div>
 
-          <div className="w-[140px]">
+          <div className="w-[200px]">
             <Select
               label="Select Course"
               className="flex flex-col"

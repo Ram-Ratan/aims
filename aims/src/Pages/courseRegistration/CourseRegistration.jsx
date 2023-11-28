@@ -26,11 +26,9 @@ const CourseRegistration = () => {
 
 
   useEffect(() => {
-    const userId = JSON.parse(localStorage.getItem("user"))?.id;
-    getCourseRegisteredById({ userId: userId })
+    getCourseRegisteredById()
       .then((res) => {
         setIsRegistered(res?.courseRegistered?.length !== 0);
-        //console.log(res.courseRegistered);
       })
       .catch((err) => {
         console.log(err);

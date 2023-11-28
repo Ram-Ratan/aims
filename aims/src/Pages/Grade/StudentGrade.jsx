@@ -44,7 +44,7 @@ const StudentGrade = () => {
                 Grade Card
             </div>
             <div className="mt-10 mx-32 border rounded-lg bg-gray-50 shadow-lg">
-                <div className='w-[170px] px-4 py-3'>
+                <div className='w-[200px] px-4 py-3'>
                     <Select 
                         label='Select Exam'
                         options={examOptions}
