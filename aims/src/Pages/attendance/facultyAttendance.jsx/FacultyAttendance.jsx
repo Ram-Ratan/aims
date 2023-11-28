@@ -26,7 +26,7 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
   ];
 
   const [registeredStudent, setRegisteredStudent] = useState(null);
-  const [isModal, setIsModal] = useState(true);
+  const [isModal, setIsModal] = useState(false);
 
   const formatData = (data) => {
     return data?.map((student) => {

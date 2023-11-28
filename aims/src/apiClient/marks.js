@@ -18,9 +18,10 @@ export const getExam = async () => {
 
 export const submitMarks = async (payload) => {
     let config = {
-        headers: {
-          "ngrok-skip-browser-warning": 69420,
-        },
+      headers: {
+        "ngrok-skip-browser-warning": 69420,
+        Authorization: `Bearer ${authToken}`,
+      },
     };
     const url = `${CONSTANT.API_URL}/exam/add-exam-entries`
     const response = await axios.post(url,payload,config);
@@ -28,6 +29,19 @@ export const submitMarks = async (payload) => {
     //console.log(response);
     return response;
 }
+
+
+export const updateMarks = async (payload) => {
+  let config = {
+    headers: {
+      "ngrok-skip-browser-warning": 69420,
+      Authorization: `Bearer ${authToken}`,
+    },
+  };
+  const url = `${CONSTANT.API_URL}/exam/update-exam-entries`;
+  const response = await axios.post(url, payload, config);
+  return response;
+};
 
 export const getMarks = async (payload) => {
   const {examId} = payload;
@@ -41,3 +55,16 @@ export const getMarks = async (payload) => {
   const response = await axios.get(url,config);
   return response;
 }
+
+export const getMarksByExamCourse = async (payload) => {
+  const { examId, courseId } = payload;
+  let config = {
+    headers: {
+      "ngrok-skip-browser-warning": 69420,
+      Authorization: `Bearer ${authToken}`,
+    },
+  };
+  const url = `${CONSTANT.API_URL}/exam/get-exam-entries-by-course-exam/?examId=${examId}&courseId=${courseId}`;
+  const response = await axios.get(url, config);
+  return response;
+};
