@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { getStudent } from "../../../apiClient/personalDetails";
-import { getCourseRegisteredById } from "../../../apiClient/courseRegistration";
 
 const StudentProfile = () => {
   const [student, setStudent] = useState(null);
-  const [courseRegistered, setCourseRegistered] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const userId = JSON.parse(localStorage.getItem("user"))?.id;
     setIsLoading(true);
-    getStudent({ userId: userId })
+    getStudent()
       .then((res) => {
-        if (res?.length === 1) {
-          setStudent(res[0]);
-        } else setStudent(null);
+        setStudent(res);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -22,15 +17,6 @@ const StudentProfile = () => {
         setIsLoading(false);
       });
   }, []);
-
-  useEffect(()=>{
-    const userId = JSON.parse(localStorage.getItem("user"))?.id;
-    getCourseRegisteredById({userId: userId}).then((res)=>{
-      setCourseRegistered(res?.courseRegistered);
-    }).catch((err)=>{
-      console.log(err);
-    })
-  },[])
 
   return (
     <div className="mt-14">
@@ -72,16 +58,14 @@ const StudentProfile = () => {
                           {student?.mobileNo}
                         </p>
                       </div>
-                      {courseRegistered && (
                         <div>
                           Course Registered
-                          {courseRegistered?.map((course) => {
+                          {student?.courseRegistered?.map((course) => {
                             return (
                               <li className="pl-2">{course?.course?.name}</li>
                             );
                           })}
                         </div>
-                      )}
                     </div>
                   </div>
                 </div>

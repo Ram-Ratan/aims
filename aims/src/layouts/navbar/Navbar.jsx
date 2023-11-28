@@ -79,6 +79,10 @@ function Navbar() {
       link: "/about",
       label: "About",
     },
+    // {
+    //   link: "/add-user",
+    //   label: "Add New User",
+    // },
   ];
   
   useEffect(()=>{

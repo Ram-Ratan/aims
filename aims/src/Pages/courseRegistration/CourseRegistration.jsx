@@ -25,7 +25,6 @@ const CourseRegistration = () => {
     getCourses({ semesterId: selectedSem?.id, branchId: selectedBranch?.id })
       .then((res) => {
         setCourses(res);
-        //console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -73,14 +72,10 @@ const CourseRegistration = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const userId = JSON.parse(localStorage.getItem("user"))?.id;
-    const student = await getStudent({ userId: userId });
     console.log(selectedCourse);
     const payload = {
-      studentId: student[0]?.id,
       courses: selectedCourse,
     };
-    console.log(payload);
     await courseRegistration(payload)
       .then((res) => {
         navigate("/personal-details");

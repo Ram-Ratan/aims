@@ -42,14 +42,15 @@ export const getSem = async () => {
 };
 
 export const courseRegistration = async (payload) => {
+  const authToken = JSON.parse(localStorage.getItem("authToken"));
   let config = {
     headers: {
       "ngrok-skip-browser-warning": 69420,
+        Authorization: `Bearer ${authToken}`,
     },
   };
   const url = `${CONSTANT.API_URL}/course-registration/register`;
   const response = await axios.post(url,payload, config);
-  //console.log(response?.data);
   return response?.data;
 };
 
