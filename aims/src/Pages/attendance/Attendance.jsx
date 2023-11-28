@@ -10,13 +10,13 @@ import {
   getCourses,
   getSem,
 } from "../../apiClient/courseRegistration";
+import { getUser } from "../../apiClient/user";
 import StudentAttendance from "./studentAttendance.jsx/StudentAttendance";
 import FacultyAttendance from "./facultyAttendance.jsx/FacultyAttendance";
 import Tabs from "../../components/tabs/Tabs";
 import FacultyViewAttendance from "./facultyViewAttendance/FacultyViewAttendance";
 import { getCourseAssignedById } from "../../apiClient/attendance";
 
-const Attendance = () => {
   const tabs = [
     {
       id: 1,
@@ -27,57 +27,20 @@ const Attendance = () => {
       tabLabel: "View Attendance",
     },
   ];
+const Attendance = () => {
+
   const [selectedTab, setSelectedTab] = useState(tabs[0].tabLabel);
-  const [semester, setSemester] = useState(null);
-  const [branch, setBranch] = useState(null);
   const [course, setCourse] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [selectedBranch, setSelectedBranch] = useState(null);
-  const [selectedSem, setSelectedSem] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-
-  // useEffect(() => {
-  //   getCourses({ semesterId: selectedSem?.id, branchId: selectedBranch?.id })
-  //     .then((res) => {
-  //       setCourse(res);
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, [selectedSem, selectedBranch]);
-
-    useEffect(() => {
-      const userId = JSON.parse(localStorage.getItem("user"))?.id;
-      const isStudent = JSON.parse(localStorage.getItem("user"))?.role === "STUDENT";
-      if(isStudent){
-        getCourseRegisteredById({ userId: userId })
-          .then((res) => {
-            setCourse(res?.courseRegistered);
-            console.log(res);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }else{
-        getCourseAssignedById({ userId: userId })
-          .then((res) => {
-            setCourse(res?.courseAssigned);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-      
-    }, []);
+  const [role, setRole] = useState(null);
 
   useEffect(() => {
-    getBranch()
+    getUser()
       .then((res) => {
-        setBranch(res);
-        console.log(res);
+        setRole(res?.data?.role);
       })
       .catch((err) => {
         console.log(err);
@@ -85,15 +48,28 @@ const Attendance = () => {
   }, []);
 
   useEffect(() => {
-    getSem()
-      .then((res) => {
-        setSemester(res);
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    if (role === "STUDENT") {
+      getCourseRegisteredById()
+        .then((res) => {
+          setCourse(res?.courseRegistered);
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (role === "FACULTY") {
+      getCourseAssignedById()
+        .then((res) => {
+          setCourse(res?.courseAssigned);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [role]);
+
+
+
 
   const courseOptions = course?.map((course) => {
     return {
@@ -103,29 +79,9 @@ const Attendance = () => {
     };
   });
 
-  const branchOptions = branch?.map((branch) => {
-    return {
-      label: branch?.name,
-      value: branch?.id,
-      ...branch,
-    };
-  });
-
-  const semOptions = semester?.map((sem) => {
-    return {
-      label: sem?.sem,
-      value: sem?.id,
-      ...sem,
-    };
-  });
   const handleTab = (e) => {
     setSelectedTab(e.tabLabel);
   };
-
-  const isStudent =
-    localStorage.getItem("user") !== "undefined"
-      ? JSON.parse(localStorage.getItem("user"))?.role === "STUDENT"
-      : true;
 
   const onDateChange = (event) => {
     setStartDate(event[0]);
@@ -144,39 +100,8 @@ const Attendance = () => {
       <div className="mx-32 pt-10">
         <div className="flex flex-col gap-4 border p-4 rounded-lg bg-gray-50 shadow-md">
           <div className="flex flex-col gap-2">
-            {/* <div className="py-2">
-              <h2 className="font-bold text-2xl">
-                Welcome! {JSON.parse(localStorage.getItem("user"))?.name}
-              </h2>
-            </div> */}
             <div>
               <div className="flex gap-4">
-                {/* <div className="min-w-[200px]">
-                  <Select
-                    label="Select Semester"
-                    className="flex flex-col"
-                    options={semOptions}
-                    value={selectedSem}
-                    required
-                    onChange={(e) => {
-                      setSelectedCourse(null);
-                      setSelectedSem(e);
-                    }}
-                  />
-                </div> */}
-                {/* <div className="min-w-[200px]">
-                  <Select
-                    label="Select Branch"
-                    className="flex flex-col"
-                    options={branchOptions}
-                    value={selectedBranch}
-                    required
-                    onChange={(e) => {
-                      setSelectedCourse(null);
-                      setSelectedBranch(e);
-                    }}
-                  />
-                </div> */}
                 <div className="min-w-[200px]">
                   <Select
                     label="Select Course"
@@ -188,13 +113,13 @@ const Attendance = () => {
                     }}
                     isClearable
                     onClear={() => {
-                      selectedCourse(null)
+                      selectedCourse(null);
                     }}
                     required
                   />
                 </div>
                 <div className="min-w-[200px]">
-                  {isStudent ? (
+                  {role === "STUDENT" ? (
                     <DatePicker
                       label="Select Date Range"
                       startDate={startDate}
@@ -220,13 +145,14 @@ const Attendance = () => {
             </div>
           </div>
 
-          {isStudent ? (
+          {role === "STUDENT" && (
             <StudentAttendance
               selectedCourse={selectedCourse}
               startDate={startDate}
               endDate={endDate}
             />
-          ) : (
+          )}
+          {role === "FACULTY" && (
             <div>
               <div className="mt-4">
                 <Tabs
@@ -242,7 +168,10 @@ const Attendance = () => {
                 />
               ) : (
                 <div>
-                  <FacultyViewAttendance selectedCourse={selectedCourse} selectedDate={selectedDate}/>
+                  <FacultyViewAttendance
+                    selectedCourse={selectedCourse}
+                    selectedDate={selectedDate}
+                  />
                 </div>
               )}
             </div>

@@ -1,8 +1,11 @@
 import axios from "axios";
 import * as CONSTANT from "./api.constant";
+const authToken = JSON.parse(localStorage.getItem("authToken"));
+
 let config = {
   headers: {
     "ngrok-skip-browser-warning": 69420,
+    Authorization: `Bearer ${authToken}`,
   },
 };
 export const getStudentByCourse = async (payload) => {
@@ -34,10 +37,7 @@ export const viewAttendanceByCourseAndDate = async (payload) => {
 };
 
 export const getCourseAssignedById = async (payload) => {
-  const { userId } = payload;
   let url = `${CONSTANT.API_URL}/course-assigned/course-assigned-by-id`;
-  if (userId) url += `?id=${userId}`;
   const response = await axios.get(url, config);
-  //console.log(response?.data);
   return response?.data;
 };

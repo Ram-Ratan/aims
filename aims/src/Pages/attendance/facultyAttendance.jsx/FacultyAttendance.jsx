@@ -80,7 +80,7 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
         ),
       },
     ],
-    [registeredStudent]
+    [registeredStudent, attendanceOption]
   );
 
   const markAllPresent = () => {
@@ -118,8 +118,6 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
       }),
       date: selectedDate
     }
-
-
     await markAttendance(payload).then((res)=>{
         showToastMessage("Attendance Marked Successfully!");
     }).catch((err)=>{
