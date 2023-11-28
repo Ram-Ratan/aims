@@ -43,7 +43,7 @@ const StudentAttendance = ({selectedCourse, startDate, endDate}) => {
           ),
         },
       ],
-      [attendanceData]
+      []
     );
 
   
@@ -53,7 +53,6 @@ const StudentAttendance = ({selectedCourse, startDate, endDate}) => {
         courseId: selectedCourse?.courseId,
         startDate: startDate,
         endDate: endDate,
-        userId: JSON.parse(localStorage.getItem("user"))?.id,
       };
       attendanceByCourseAndDate(payload)
         .then((res) => {
