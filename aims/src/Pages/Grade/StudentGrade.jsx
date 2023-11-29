@@ -72,8 +72,7 @@ const StudentGrade = () => {
                                     <tr key={data?.courseId}>
                                         <td className="border p-2">{data?.course?.name}</td> 
                                         <td className="border p-2">{data?.marksObtained}</td>
-                                        <td className="border p-2">{selectedExam?.code === ("CT1" || "CT2") ? 20 : 100}</td>
-
+                                        <td className="border p-2">{selectedExam?.code === ("CT1") || selectedExam.code === ("CT2") ? 20 : 100}</td>
                                     </tr>
                                 ))
                             }
