@@ -28,3 +28,9 @@ export const logIn = async (payload) => {
     .post(url, payload,config);
     return response;
 };
+
+export const resetPassword = async (payload) => {
+  const url = `${CONSTANT.API_URL}/user/reset-password`;
+  const response = axios.post(url,payload,config);
+  return response;
+}

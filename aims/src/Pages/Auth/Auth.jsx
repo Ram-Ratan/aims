@@ -65,7 +65,16 @@ const Auth = () => {
                 htmlFor="password"
                 className="block text-gray-700 text-sm font-bold mb-2"
               >
-                Password
+              <div className='flex gap-2 items-center'>
+
+                <div>
+                  Password
+
+                </div>
+                <div className='font-normal text-xs text-blue-700 hover:cursor-pointer' onClick={()=>{navigate('/reset-password')}}>
+                  Reset Password
+                </div>
+              </div>
               </label>
              
               <input
