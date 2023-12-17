@@ -10,6 +10,6 @@ let config = {
 
 export const getUser = async () => {
   const url = `${CONSTANT.API_URL}/user/get-user`;
-  const response = axios.get(url, config);
-  return response;
+  const response = await axios.get(url, config);
+  return response.data;
 };

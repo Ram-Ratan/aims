@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { getStudent } from "../../../apiClient/personalDetails";
+import React from "react";
 import { useGetPersonalDetails } from "../../../query/personalDetails/personalDetails";
 
 const StudentProfile = () => {

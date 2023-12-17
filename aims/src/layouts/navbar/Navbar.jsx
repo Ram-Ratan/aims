@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Navbar.css'
-import { getUser } from '../../apiClient/user';
+import { useGetUser } from '../../query/user/user';
 
 function Navbar() {
-  const [role, setRole] = useState(null);
   const studentNav = [
     {
       link: "/",
@@ -89,13 +88,7 @@ function Navbar() {
     // },
   ];
   
-  useEffect(()=>{
-    getUser().then((res)=>{
-      setRole(res?.data?.role);
-    }).catch((err)=>{
-      console.log(err);
-    })
-  },[])
+  const { data:user } = useGetUser();
 
 
   return (
@@ -103,7 +96,7 @@ function Navbar() {
       <div>
         {localStorage.getItem("authToken") ? (
           <ul>
-            {role === "STUDENT" && studentNav?.map((item) => {
+            {user?.role === "STUDENT" && studentNav?.map((item) => {
               return (
                 <li>
                   <NavLink
@@ -117,7 +110,7 @@ function Navbar() {
                 </li>
               );
             })}
-            {role === "FACULTY" && facultyNav?.map((item) => {
+            {user?.role === "FACULTY" && facultyNav?.map((item) => {
               return (
                 <li>
                   <NavLink
@@ -131,7 +124,7 @@ function Navbar() {
                 </li>
               );
             })}
-            {role === "ADMIN" && adminNav?.map((item) => {
+            {user?.role === "ADMIN" && adminNav?.map((item) => {
               return (
                 <li>
                   <NavLink

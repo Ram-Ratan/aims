@@ -1,19 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import StudentProfile from './studentProfile/StudentProfile';
 import FacultyProfile from './facultyProfile/FacultyProfile';
-import {getUser} from "../../apiClient/user";
+import { useGetUser } from '../../query/user/user';
 
 const PersonalDetails = () => {
-  const [role, setRole] = useState(null);
-       useEffect(() => {
-         getUser()
-           .then((res) => {
-             setRole(res?.data?.role);
-           })
-           .catch((err) => {
-             console.log(err);
-           });
-       }, []);
+  const { data:user } = useGetUser();
 
   return (
     <div className="p-4">
@@ -24,9 +15,9 @@ const PersonalDetails = () => {
           </div>
         </div>
       </div>
-      {role === "STUDENT" && <StudentProfile />}
-      {role === "FACULTY" && <FacultyProfile />}
-      {role === "ADMIN" && <FacultyProfile />}
+      {user?.role === "STUDENT" && <StudentProfile />}
+      {user?.role === "FACULTY" && <FacultyProfile />}
+      {user?.role === "ADMIN" && <FacultyProfile />}
     </div>
   );
 };

@@ -1,26 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import StudentGrade from './StudentGrade';
-import FacultyGrade from './FacultyGrade';
-import { getUser } from '../../apiClient/user';
+import React from "react";
+import StudentGrade from "./StudentGrade";
+import FacultyGrade from "./FacultyGrade";
+import { useGetUser } from "../../query/user/user";
 
 const Grade = () => {
-    const [role, setRole] = useState(null);
+  const { data: user } = useGetUser();
+  return (
+    <div>
+      {user?.role === "STUDENT" && <StudentGrade />}
+      {user?.role === "FACULTY" && <FacultyGrade />}
+    </div>
+  );
+};
 
-      useEffect(() => {
-        getUser()
-          .then((res) => {
-            setRole(res?.data?.role);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }, []);
-    return (
-      <div>
-        {role === "STUDENT" && <StudentGrade />}
-        {role === "FACULTY" && <FacultyGrade />}
-      </div>
-    );
-}
-
-export default Grade
+export default Grade;

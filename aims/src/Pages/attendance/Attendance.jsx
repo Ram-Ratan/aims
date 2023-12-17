@@ -10,12 +10,12 @@ import {
   getCourses,
   getSem,
 } from "../../apiClient/courseRegistration";
-import { getUser } from "../../apiClient/user";
 import StudentAttendance from "./studentAttendance.jsx/StudentAttendance";
 import FacultyAttendance from "./facultyAttendance.jsx/FacultyAttendance";
 import Tabs from "../../components/tabs/Tabs";
 import FacultyViewAttendance from "./facultyViewAttendance/FacultyViewAttendance";
 import { getCourseAssignedById } from "../../apiClient/attendance";
+import { useGetUser } from "../../query/user/user";
 
   const tabs = [
     {
@@ -35,20 +35,12 @@ const Attendance = () => {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [role, setRole] = useState(null);
+
+
+  const { data:user } = useGetUser();
 
   useEffect(() => {
-    getUser()
-      .then((res) => {
-        setRole(res?.data?.role);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  useEffect(() => {
-    if (role === "STUDENT") {
+    if (user?.role === "STUDENT") {
       getCourseRegisteredById()
         .then((res) => {
           setCourse(res?.courseRegistered);
@@ -57,7 +49,7 @@ const Attendance = () => {
         .catch((err) => {
           console.log(err);
         });
-    } else if (role === "FACULTY") {
+    } else if (user?.role === "FACULTY") {
       getCourseAssignedById()
         .then((res) => {
           setCourse(res?.courseAssigned);
@@ -66,7 +58,7 @@ const Attendance = () => {
           console.log(err);
         });
     }
-  }, [role]);
+  }, [user?.role]);
 
 
 
@@ -119,7 +111,7 @@ const Attendance = () => {
                   />
                 </div>
                 <div className="min-w-[200px]">
-                  {role === "STUDENT" ? (
+                  {user?.role === "STUDENT" ? (
                     <DatePicker
                       label="Select Date Range"
                       startDate={startDate}
@@ -145,14 +137,14 @@ const Attendance = () => {
             </div>
           </div>
 
-          {role === "STUDENT" && (
+          {user?.role === "STUDENT" && (
             <StudentAttendance
               selectedCourse={selectedCourse}
               startDate={startDate}
               endDate={endDate}
             />
           )}
-          {role === "FACULTY" && (
+          {user?.role === "FACULTY" && (
             <div>
               <div className="mt-4">
                 <Tabs
