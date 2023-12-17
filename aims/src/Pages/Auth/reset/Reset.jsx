@@ -1,26 +1,33 @@
-import React from 'react'
-import { ToastContainer } from 'react-toastify'
-import Button from '../../../components/button/Button'
-import aims from '../../../assets/AIMS-logo.png';
-import { resetPassword } from '../../../apiClient/auth';
-import { showErrorToastMessage, showToastMessage } from '../../utils/utils';
+import React from "react";
+import { ToastContainer } from "react-toastify";
+import Button from "../../../components/button/Button";
+import aims from "../../../assets/AIMS-logo.png";
+import { showErrorToastMessage, showToastMessage } from "../../utils/utils";
+import { useResetPassword } from "../../../query/auth/auth";
 
 const Reset = () => {
+  const onSuccess = () => {
+    showToastMessage("Password updated Successfully!");
+  };
+  const onError = (err) => {
+    showErrorToastMessage(err.response?.data?.error);
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const payload = {email: e.target.email.value, oldPassword: e.target.oldPassword.value, newPassword: e.target.newPassword.value}
-        await resetPassword(payload).then((res)=>{
-          showToastMessage("Password updated Successfully!");
-        }).catch((err)=>{
-          console.log(err);
-          showErrorToastMessage(err.message);
-        })
-    }
+  const { mutate: resetPassword } = useResetPassword({ onSuccess, onError });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const payload = {
+      email: e.target.email.value,
+      oldPassword: e.target.oldPassword.value,
+      newPassword: e.target.newPassword.value,
+    };
+    resetPassword(payload);
+  };
 
   return (
     <div>
-        <div className="min-h-[630px] flex items-center justify-center bg-gray-100 overflow-hidden">
+      <div className="min-h-[630px] flex items-center justify-center bg-gray-100 overflow-hidden">
         <ToastContainer />
 
         <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
@@ -52,7 +59,7 @@ const Reset = () => {
               >
                 Old Password
               </label>
-             
+
               <input
                 type="password"
                 name="oldPassword"
@@ -68,7 +75,7 @@ const Reset = () => {
               >
                 New Password
               </label>
-             
+
               <input
                 type="password"
                 name="newPassword"
@@ -78,7 +85,7 @@ const Reset = () => {
             </div>
 
             <Button
-              variant = "filled"
+              variant="filled"
               type="submit"
               className="w-full font-serif"
             >
@@ -88,7 +95,7 @@ const Reset = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Reset
+export default Reset;
