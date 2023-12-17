@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { getStudent } from "../../../apiClient/personalDetails";
+import { useGetPersonalDetails } from "../../../query/personalDetails/personalDetails";
 
 const StudentProfile = () => {
-  const [student, setStudent] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [student, setStudent] = useState(null);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    setIsLoading(true);
-    getStudent()
-      .then((res) => {
-        setStudent(res);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsLoading(false);
-      });
-  }, []);
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   getStudent()
+  //     .then((res) => {
+  //       setStudent(res);
+  //       setIsLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       setIsLoading(false);
+  //     });
+  // }, []);
+
+  const { isLoading, data: student } = useGetPersonalDetails("STUDENT");
+
 
   return (
     <div className="mt-14">
