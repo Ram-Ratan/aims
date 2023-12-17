@@ -1,13 +1,28 @@
 import React from 'react';
 import aims from '../../assets/AIMS-logo.png';
-import { logIn } from '../../apiClient/auth';
 import { useNavigate } from 'react-router-dom';
 import { showErrorToastMessage, showToastMessage } from '../utils/utils';
 import { ToastContainer } from 'react-toastify';
 import Button from '../../components/button/Button';
+import { useLogIn } from '../../query/auth/auth';
 
 const Auth = () => {
     const navigate = useNavigate();
+    const onSuccess = (data) => {
+      if (data?.data) {
+        showToastMessage("LoggedIn Successfully!");
+        localStorage.setItem("authToken", JSON.stringify(data.data?.token));
+        navigate("/");
+        window.location.reload();
+      } else {
+        showErrorToastMessage("Invalid Username or Password");
+      }
+    };
+    const onError = () => {
+      console.log('error')
+      showErrorToastMessage("Invalid Username or Password");
+    };
+    const {mutate:logIn} = useLogIn({onSuccess,onError});
 
     const handleSubmit = async (e)=>{
       e.preventDefault();
@@ -17,21 +32,7 @@ const Auth = () => {
         "email":email,
         "password": password
       }
-      
-      await logIn(logInPayload)
-        .then((res) => {
-          if (res?.data) {
-            localStorage.setItem("authToken", JSON.stringify(res.data?.token));
-            navigate("/");
-            window.location.reload();
-            showToastMessage("LoggedIn Successfully!");
-          } else {
-            showErrorToastMessage("Invalid Username or Password");
-          }
-        })
-        .catch((err) => {
-          showErrorToastMessage("Invalid Username or Password");
-        });
+      logIn(logInPayload);
     }
 
     return (
