@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import StudentProfile from './studentProfile/StudentProfile';
 import FacultyProfile from './facultyProfile/FacultyProfile';
-import { useGetUser } from '../../query/user/user';
+import { useSelector } from 'react-redux';
 
 const PersonalDetails = () => {
-  const { data:user } = useGetUser();
+  const user = useSelector((state) => state.user.user);
+
 
   return (
     <div className="p-4">

@@ -1,10 +1,11 @@
 import React from "react";
 import StudentGrade from "./StudentGrade";
 import FacultyGrade from "./FacultyGrade";
-import { useGetUser } from "../../query/user/user";
+import { useSelector } from "react-redux";
 
 const Grade = () => {
-  const { data: user } = useGetUser();
+  const user = useSelector((state) => state.user.user);
+
   return (
     <div>
       {user?.role === "STUDENT" && <StudentGrade />}

@@ -15,7 +15,7 @@ import FacultyAttendance from "./facultyAttendance.jsx/FacultyAttendance";
 import Tabs from "../../components/tabs/Tabs";
 import FacultyViewAttendance from "./facultyViewAttendance/FacultyViewAttendance";
 import { getCourseAssignedById } from "../../apiClient/attendance";
-import { useGetUser } from "../../query/user/user";
+import { useSelector } from "react-redux";
 
   const tabs = [
     {
@@ -37,7 +37,9 @@ const Attendance = () => {
   const [endDate, setEndDate] = useState(null);
 
 
-  const { data:user } = useGetUser();
+  // const { data:user } = useGetUser();
+  const user = useSelector((state) => state.user.user);
+
 
   useEffect(() => {
     if (user?.role === "STUDENT") {

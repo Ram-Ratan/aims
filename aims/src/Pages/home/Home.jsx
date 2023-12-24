@@ -5,6 +5,9 @@ import ChipIcon from '../../assets/svg/Chip'
 import ComputerIcon from '../../assets/svg/Computer'
 import PhoneIcon from '../../assets/svg/Phone'
 import MailIcon from '../../assets/svg/Mail'
+import { useGetUser } from '../../query/user/user'
+import { useDispatch, useSelector } from 'react-redux'
+import { setUserData } from '../../store/reducers/userSlice'
 const programmes = [
   {
     name: "Electronics and Communication",
@@ -21,18 +24,26 @@ const ProgrammesIcon = (index)=>{
   switch (index) {
     case 0:
       return <ChipIcon/>
-      break;
     case 1:
       return <ComputerIcon/>
-      break;
     case 2:
       return <ChipIcon/>
-      break;
     default:
       break;
   }
 }
 const Home = () => {
+      const dispatch = useDispatch();
+      const isAuthenticated = useSelector((state) => state.user.isAuthenticate);
+      const onGetUserSuccess = (data) => {
+        if (data) {
+          dispatch(setUserData(data));
+        }
+      };
+      const { data: user } = useGetUser({
+        onGetUserSuccess,
+        isAuthenticated,
+      });
   return (
     <div className="p-4">
       <Header />

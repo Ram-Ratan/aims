@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Navbar.css'
-import { useGetUser } from '../../query/user/user';
+import { useSelector } from 'react-redux';
 
 function Navbar() {
   const studentNav = [
@@ -88,13 +88,15 @@ function Navbar() {
     // },
   ];
   
-  const { data:user } = useGetUser();
+  // const { data:user } = useGetUser();
+  const user = useSelector((state)=> state.user.user);
+  const isAuthenticated = useSelector((state)=> state.user.isAuthenticated);
 
 
   return (
     <nav className="bg-gray-50 p-4 h-screen w-52 overflow-y-auto fixed top-14">
       <div>
-        {localStorage.getItem("authToken") ? (
+        { isAuthenticated? (
           <ul>
             {user?.role === "STUDENT" && studentNav?.map((item) => {
               return (

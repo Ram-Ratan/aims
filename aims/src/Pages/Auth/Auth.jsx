@@ -5,15 +5,19 @@ import { showErrorToastMessage, showToastMessage } from '../utils/utils';
 import { ToastContainer } from 'react-toastify';
 import Button from '../../components/button/Button';
 import { useLogIn } from '../../query/auth/auth';
+import {useDispatch } from 'react-redux';
+import { setToken, setUserAuthentication } from '../../store/reducers/userSlice';
 
 const Auth = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const onSuccess = (data) => {
       if (data?.data) {
         showToastMessage("LoggedIn Successfully!");
         localStorage.setItem("authToken", JSON.stringify(data.data?.token));
+        dispatch(setToken(data.data?.token));
+        dispatch(setUserAuthentication(true));
         navigate("/");
-        window.location.reload();
       } else {
         showErrorToastMessage("Invalid Username or Password");
       }

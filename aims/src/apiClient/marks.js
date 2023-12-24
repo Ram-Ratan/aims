@@ -1,6 +1,5 @@
 import axios from "axios";
 import * as CONSTANT from "./api.constant";
-const authToken = JSON.parse(localStorage.getItem("authToken"));
 
 
 
@@ -17,6 +16,8 @@ export const getExam = async () => {
 }
 
 export const submitMarks = async (payload) => {
+const authToken = JSON.parse(localStorage.getItem("authToken"));
+
     let config = {
       headers: {
         "ngrok-skip-browser-warning": 69420,
@@ -32,6 +33,8 @@ export const submitMarks = async (payload) => {
 
 
 export const updateMarks = async (payload) => {
+const authToken = JSON.parse(localStorage.getItem("authToken"));
+
   let config = {
     headers: {
       "ngrok-skip-browser-warning": 69420,
@@ -44,6 +47,8 @@ export const updateMarks = async (payload) => {
 };
 
 export const getMarks = async (payload) => {
+const authToken = JSON.parse(localStorage.getItem("authToken"));
+
   const {examId} = payload;
   let config = {
     headers: {
@@ -57,6 +62,8 @@ export const getMarks = async (payload) => {
 }
 
 export const getMarksByExamCourse = async (payload) => {
+const authToken = JSON.parse(localStorage.getItem("authToken"));
+
   const { examId, courseId } = payload;
   let config = {
     headers: {

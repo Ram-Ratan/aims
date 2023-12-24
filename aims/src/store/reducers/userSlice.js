@@ -1,14 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  userProfileData: {
-    name: "dummy name",
-    role: "STUDENT"
-  },
-  userData: {},
+  userProfileData: {},
+  user: {},
   isAuthenticated: false,
-  accessToken: localStorage.getItem("accessToken") || null,
-  idAccessToken: localStorage.getItem("idAccessToken") || null,
+  authToken: JSON.parse(localStorage.getItem("authToken")) || null,
 };
 
 const userSlice = createSlice({
@@ -19,10 +15,10 @@ const userSlice = createSlice({
             state.userProfileData = action.payload;
         },
         setUserData(state,action){
-            state.userData = action.payload;
+            state.user = action.payload;
         },
         setToken(state, action){
-            state.accessToken = action.payload
+            state.authToken = action.payload
         },
         setUserAuthentication(state,action){
             state.isAuthenticated = action.payload
