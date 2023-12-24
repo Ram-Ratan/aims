@@ -12,6 +12,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ModalPopup from "../../../layouts/modalPopUp/ModalPopUp";
 import { showErrorToastMessage, showToastMessage } from "../../utils/utils";
+import { useGetStudentByCourse } from "../../../query/attendance/attendance";
 
 const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
   const attendanceOption = [
@@ -42,16 +43,26 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
     });
   };
 
-  useEffect(() => {
-    getStudentByCourse({ courseId: selectedCourse?.courseId })
-      .then((res) => {
-        setRegisteredStudent(formatData(res));
-      })
-      .catch((err) => {
-        setRegisteredStudent(null);
-        console.log(err);
-      });
-  }, [selectedCourse]);
+  const onSuccess = (data)=>{
+    setRegisteredStudent(formatData(data));
+  }
+  const onError = ()=>{
+    setRegisteredStudent(null);
+  }
+
+
+  const {data} = useGetStudentByCourse({courseId: selectedCourse?.courseId,onSuccess,onError});
+
+  // useEffect(() => {
+  //   getStudentByCourse({ courseId: selectedCourse?.courseId })
+  //     .then((res) => {
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, [selectedCourse]);
+
+
 
   const columns = useMemo(
     () => [
