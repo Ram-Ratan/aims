@@ -68,5 +68,5 @@ To run the AIMS Portal locally, follow these steps:
    - Student LogIn: Email: `20235@iiitu.ac.in` Password: 12345
    - Faculty LogIn: Email: `ankur.kumar@iiitu.ac.in` Password: 12345
    - Admin LogIn: Email: `ram@iiitu.ac.in` Password: 12345
-4. **Note:** Please don't misuse the credintials.
+4. **Note:** Please don't misuse the credentials.
 
