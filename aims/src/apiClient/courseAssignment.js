@@ -1,29 +1,13 @@
-import axios from "axios";
-import * as CONSTANT from "./api.constant";
-
+import api from "./api";
 
 export const getAllFaculty = async () => {
-  const authToken = JSON.parse(localStorage.getItem("authToken"));
-  let config = {
-    headers: {
-      "ngrok-skip-browser-warning": 69420,
-      Authorization: `Bearer ${authToken}`,
-    },
-  };
-  const url = `${CONSTANT.API_URL}/faculty/get-all-faculty`;
-  const response = axios.get(url, config);
+  const url = `/faculty/get-all-faculty`;
+  const response = api.get(url);
   return response;
 };
 
 export const courseAssignment = async (payload) => {
-  const authToken = JSON.parse(localStorage.getItem("authToken"));
-  let config = {
-    headers: {
-      "ngrok-skip-browser-warning": 69420,
-      Authorization: `Bearer ${authToken}`,
-    },
-  };
-  const url = `${CONSTANT.API_URL}/course-assigned/course-assignment`;
-  const response = axios.post(url,payload, config);
+  const url = `/course-assigned/course-assignment`;
+  const response = api.post(url,payload);
   return response;
 };

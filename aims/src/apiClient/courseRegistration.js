@@ -1,75 +1,39 @@
-import axios from "axios";
-import * as CONSTANT from "./api.constant";
+import api from "./api";
 
 export const getCourses = async (payload) => {
-const authToken = JSON.parse(localStorage.getItem("authToken"));
-  let config = {
-    headers: {
-      "ngrok-skip-browser-warning": 69420,
-      Authorization: `Bearer ${authToken}`,
-    },
-  };
   const semesterId = payload?.semesterId;
   const branchId = payload?.branchId;
 
-  let url = `${CONSTANT.API_URL}/course/get-all-courses`;
+  let url = `/course/get-all-courses`;
   if(semesterId) url += `?semesterId=${semesterId}`;
   if(branchId) semesterId
     ? (url += `&branchId=${branchId}`)
     : (url += `?branchId=${branchId}`);
-    console.log(url);
-  const response = await axios.get(url, config);
+  const response = await api.get(url);
   return response?.data;
 };
 
 export const getBranch = async () => {
-  const url = `${CONSTANT.API_URL}/branch/get-all-branch`;
-  let config = {
-    headers: {
-      "ngrok-skip-browser-warning": 69420,
-    },
-  };
-  const response = await axios.get(url, config);
-  // console.log(response);
+  const url = `/branch/get-all-branch`;
+  const response = await api.get(url);
   return response?.data;
 };
 
 export const getSem = async () => {
-  let config = {
-    headers: {
-      "ngrok-skip-browser-warning": 69420,
-    },
-  };
-  const url = `${CONSTANT.API_URL}/semester/get-all-semester`;
-  const response = await axios.get(url, config);
-  //console.log(response?.data);
+  const url = `/semester/get-all-semester`;
+  const response = await api.get(url);
   return response?.data;
 };
 
 export const courseRegistration = async (payload) => {
-const authToken = JSON.parse(localStorage.getItem("authToken"));
-  let config = {
-    headers: {
-      "ngrok-skip-browser-warning": 69420,
-        Authorization: `Bearer ${authToken}`,
-    },
-  };
-  const url = `${CONSTANT.API_URL}/course-registration/register`;
-  const response = await axios.post(url,payload, config);
+  const url = `/course-registration/register`;
+  const response = await api.post(url,payload);
   return response?.data;
 };
 
 export const getCourseRegisteredById = async (payload) => {
-const authToken = JSON.parse(localStorage.getItem("authToken"));
-  let config = {
-    headers: {
-      "ngrok-skip-browser-warning": 69420,
-      Authorization: `Bearer ${authToken}`,
-    },
-  };
-  let url = `${CONSTANT.API_URL}/course-registration/course-registered-by-id`;
-  const response = await axios.get(url, config);
-  //console.log(response?.data);
+  let url = `/course-registration/course-registered-by-id`;
+  const response = await api.get(url);
   return response?.data;
 };
 

@@ -1,77 +1,35 @@
-import axios from "axios";
-import * as CONSTANT from "./api.constant";
-
+import api from "./api";
 
 
 export const getExam = async () => {
-    let config = {
-      headers: {
-        "ngrok-skip-browser-warning": 69420,
-      },
-    };
-    let url = `${CONSTANT.API_URL}/exam/get-exam`
-    const response = await axios.get(url,config);
-    console.log(response);
+    let url = `/exam/get-exam`
+    const response = await api.get(url);
     return response;
 }
 
 export const submitMarks = async (payload) => {
-const authToken = JSON.parse(localStorage.getItem("authToken"));
-
-    let config = {
-      headers: {
-        "ngrok-skip-browser-warning": 69420,
-        Authorization: `Bearer ${authToken}`,
-      },
-    };
-    const url = `${CONSTANT.API_URL}/exam/add-exam-entries`
-    const response = await axios.post(url,payload,config);
-    console.log('happy diwali',response);
-    //console.log(response);
+    const url = `/exam/add-exam-entries`
+    const response = await api.post(url,payload);
     return response;
 }
 
 
 export const updateMarks = async (payload) => {
-const authToken = JSON.parse(localStorage.getItem("authToken"));
-
-  let config = {
-    headers: {
-      "ngrok-skip-browser-warning": 69420,
-      Authorization: `Bearer ${authToken}`,
-    },
-  };
-  const url = `${CONSTANT.API_URL}/exam/update-exam-entries`;
-  const response = await axios.post(url, payload, config);
+  const url = `/exam/update-exam-entries`;
+  const response = await api.post(url, payload);
   return response;
 };
 
 export const getMarks = async (payload) => {
-const authToken = JSON.parse(localStorage.getItem("authToken"));
-
   const {examId} = payload;
-  let config = {
-    headers: {
-      "ngrok-skip-browser-warning": 69420,
-      Authorization: `Bearer ${authToken}`,
-    },
-  };
-  const url = `${CONSTANT.API_URL}/exam/get-exam-entries-by-exam-student/?examId=${examId}`
-  const response = await axios.get(url,config);
+  const url = `/exam/get-exam-entries-by-exam-student/?examId=${examId}`
+  const response = await api.get(url);
   return response;
 }
 
 export const getMarksByExamCourse = async (payload) => {
-const authToken = JSON.parse(localStorage.getItem("authToken"));
-
   const { examId, courseId } = payload;
-  let config = {
-    headers: {
-      "ngrok-skip-browser-warning": 69420,
-      Authorization: `Bearer ${authToken}`,
-    },
-  };
-  const url = `${CONSTANT.API_URL}/exam/get-exam-entries-by-course-exam/?examId=${examId}&courseId=${courseId}`;
-  const response = await axios.get(url, config);
+  const url = `/exam/get-exam-entries-by-course-exam/?examId=${examId}&courseId=${courseId}`;
+  const response = await api.get(url);
   return response;
 };

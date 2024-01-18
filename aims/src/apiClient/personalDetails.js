@@ -1,32 +1,17 @@
-import axios from "axios";
-import * as CONSTANT from "./api.constant";
+import api from "./api";
 
 export const getStudent = async (payload) => {
-  const authToken = JSON.parse(localStorage.getItem("authToken"));
-  let config = {
-    headers: {
-      "ngrok-skip-browser-warning": 69420,
-      Authorization: `Bearer ${authToken}`,
-    },
-  };
-  let url = `${CONSTANT.API_URL}/student/get-student`;
-  const response = await axios
-    .get(url, config);
+  let url = `/student/get-student`;
+  const response = await api
+    .get(url);
   return response?.data;
 };
 
 
 export const getFaculty = async (payload) => {
-  const authToken = JSON.parse(localStorage.getItem("authToken"));
-  let config = {
-    headers: {
-      "ngrok-skip-browser-warning": 69420,
-      Authorization: `Bearer ${authToken}`,
-    },
-  };
   const {userId} = payload;
-  let url = `${CONSTANT.API_URL}/faculty/get-faculty`;
+  let url = `/faculty/get-faculty`;
   if(userId) url += `?userId=${userId}`;
-  const response = await axios.get(url,config);
+  const response = await api.get(url);
   return response?.data;
 }

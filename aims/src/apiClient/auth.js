@@ -1,36 +1,19 @@
-import axios from "axios";
-import * as CONSTANT from "./api.constant";
-let config = {
-  headers: {
-    "ngrok-skip-browser-warning": 69420,
-  },
-};
-export const signUP =async (payload)=>{
-  const url = `${CONSTANT.API_URL}/user/signup`;
-    const response = await axios
-      .post(
-        url,
-        payload,config
-      )
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+import api from "./api";
 
+export const signUP =async (payload)=>{
+  const url = `/user/signup`;
+    const response = await api.post(url,payload);
       return response;
 }
 
 export const logIn = async (payload) => {
-  const url = `${CONSTANT.API_URL}/user/login`;
-  const response = axios
-    .post(url, payload,config);
+  const url = `/user/login`;
+  const response = api.post(url,payload);
     return response;
 };
 
 export const resetPassword = async (payload) => {
-  const url = `${CONSTANT.API_URL}/user/reset-password`;
-  const response = axios.post(url,payload,config);
+  const url = `/user/reset-password`;
+  const response = api.post(url,payload);
   return response;
 }
