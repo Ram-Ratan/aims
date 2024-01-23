@@ -8,8 +8,6 @@ import { formatDate } from '../../utils/utils';
 
 const StudentAttendance = ({selectedCourse, startDate, endDate}) => {
 
-  
-
 
   const [attendanceData, setAttendanceData] = useState(null);
 

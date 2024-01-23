@@ -1,32 +1,17 @@
 import React,{useState, useEffect} from 'react'
 import Select from '../../components/select/Select'
 import { getExam, getMarks } from '../../apiClient/marks';
-
+import { useGetExam, useGetMarks } from '../../query/grade/grade';
 
 const StudentGrade = () => {
-    const [exam,setExam] = useState(null);
+    
     const [selectedExam,setSelectedExam] = useState(null);
-    const [marks,setMarks] = useState();
+    
+    const {data:exam} = useGetExam().data;
+    console.log('data',exam);
 
-    useEffect(()=>{
-        getExam()?.then((res)=>{
-            console.log('exam type',res.data);
-            setExam(res.data);
-        }).catch((err)=>{
-            console.log(err);
-        })
-    },[])
-
-    useEffect(()=>{
-        console.log('exam checking',selectedExam);
-        getMarks({examId:selectedExam?.id})
-        .then((res)=>{
-            console.log('marks api data checking',res.data);
-            setMarks(res.data);
-        }).catch((err)=>{
-            console.log(err);
-        })
-    },[selectedExam])
+    const {data:marks} = useGetMarks({examId:selectedExam?.id});
+    console.log('marks data',marks);
 
     const examOptions = exam?.map((exam) => {
         return {
@@ -35,6 +20,7 @@ const StudentGrade = () => {
           ...exam
         }
     }) 
+ 
 
     return (
         <div>
@@ -53,7 +39,7 @@ const StudentGrade = () => {
                         onChange={(e) => setSelectedExam(e)}
                         isClearable
                         onClear={() => {
-                            selectedExam(null)
+                            setSelectedExam(null)
                         }}
                     />
                 </div>
