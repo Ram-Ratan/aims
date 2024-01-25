@@ -2,16 +2,30 @@ import React,{useState, useEffect} from 'react'
 import Select from '../../components/select/Select'
 import { getExam, getMarks } from '../../apiClient/marks';
 import { useGetExam, useGetMarks } from '../../query/grade/grade';
+import { isError } from 'react-query';
 
 const StudentGrade = () => {
     
     const [selectedExam,setSelectedExam] = useState(null);
     
-    const {data:exam} = useGetExam().data;
-    console.log('data',exam);
+    const {data:exam, isLoading:examLoading, isError: examError} = useGetExam();
+    const {data:marks,isLoading: marksLoading, isError: marksError} = useGetMarks({examId:selectedExam?.id});
+    console.log('exam type',exam);
+    if(examLoading){
+        return <h1>Exam Loading</h1>
+    }
+    if(examError){
+        return <h1>Exam Error</h1>
+    }
 
-    const {data:marks} = useGetMarks({examId:selectedExam?.id});
+
     console.log('marks data',marks);
+    if(marksLoading){
+        return <h1>Marks Loading...</h1>
+    }
+    if(marksError){
+        return <h1>Marks Error</h1>
+    }
 
     const examOptions = exam?.map((exam) => {
         return {
@@ -24,7 +38,6 @@ const StudentGrade = () => {
 
     return (
         <div>
-            
             <div 
                 className='mx-32 my-4 flex justify-center items-center text-3xl font-semibold border rounded-md h-20 shadow-md'>
                 Grade Card

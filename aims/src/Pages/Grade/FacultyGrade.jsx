@@ -12,10 +12,13 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { showToastMessage, showErrorToastMessage } from "../utils/utils";
 import ModalPopup from "../../layouts/modalPopUp/ModalPopUp";
+import { useGetExam, useGetCourseById, useGetStudentByCourse } from "../../query/grade/grade";
+import { isError } from "react-query";
+
 
 const FacultyGrade = () => {
-  const [exam, setExam] = useState([]);
-  const [course, setCourse] = useState([]);
+  //const [exam, setExam] = useState([]);
+  //const [course, setCourse] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [selectedExam, setSelectedExam] = useState(null);
   const [isModal, setIsModal] = useState(false);
@@ -34,40 +37,28 @@ const FacultyGrade = () => {
   };
 
   //fetching exam type
-  useEffect(() => {
-    getExam()
-      ?.then((res) => {
-        setExam(res.data);
-        console.log(res);
-        console.log("exam data received");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  const {data:exam, isLoading:examLoading, isError: examError} = useGetExam();
+
   // fetching assigned course for faculty
-  useEffect(() => {
-    getCourseAssignedById()
-      .then((res) => {
-        console.log(res.courseAssigned);
-        setCourse(res?.courseAssigned);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  const {data:course} = useGetCourseById();
 
   //fetching all registered users
-  useEffect(() => {
-    getStudentByCourse({ courseId: selectedCourse?.courseId })
-      .then((res) => {
-        setRegisteredStudent(formatData(res));
-      })
-      .catch((err) => {
-        //console.log('not received');
-        setRegisteredStudent(null);
-      });
-  }, [selectedCourse]);
+  const {data:studentsByCourse,isLoading:studentLoading, isError: studentError} = useGetStudentByCourse({courseId: selectedCourse?.courseId});
+  
+  useEffect(()=>{
+    console.log('course data',studentsByCourse);
+    if(studentsByCourse){
+      setRegisteredStudent(formatData(studentsByCourse));
+    }
+  },[selectedCourse])
+  
+  if(studentLoading){
+    return <h2>Student data is loading</h2>
+  }
+  if(studentError){
+    return <h2>Error while fetching student data</h2>
+  }
+
 
   //select options
   const examOptions = exam?.map((exam) => {
