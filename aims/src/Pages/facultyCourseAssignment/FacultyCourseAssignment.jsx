@@ -5,47 +5,30 @@ import { courseAssignment, getAllFaculty } from "../../apiClient/courseAssignmen
 import { getCourses } from "../../apiClient/courseRegistration";
 import { showErrorToastMessage, showToastMessage } from "../utils/utils";
 import { ToastContainer } from "react-toastify";
+import { useGetAllCourses, useGetAllFaculty } from "../../query/facultyCourseAssignment/facultyCourseAssignment";
 
 const FacultyCourseAssignment = () => {
-  const [faculty, setFaculty] = useState(null);
-  const [courses, setCourses] = useState(null);
   const [selectedFaculty, setSelectedFaculty] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState([]);
-  
-  useEffect(() => {
-    getAllFaculty()
-      .then((res) => {
-        setFaculty(
-          res.data?.map((faculty) => {
-            return {
-              label: faculty?.fullName,
-              value: faculty?.id,
-              ...faculty,
-            };
-          })
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-  useEffect(() => {
-    getCourses()
-      .then((res) => {
-        setCourses(
-          res?.map((course) => {
-            return {
-              label: course?.name,
-              value: course?.id,
-              ...course,
-            };
-          })
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  const {data:faculty} = useGetAllFaculty();
+  const {data:courses} = useGetAllCourses();
+
+  const facultyOptions = faculty?.map((faculty)=>{
+    return {
+      label: faculty?.fullName,
+      value: faculty?.id,
+      ...faculty,
+    }
+  })
+
+  const courseOptions = courses?.map((course) => {
+    return {
+      label: course?.name,
+      value: course?.id,
+      ...course,
+    }
+  })
+
 
   const handleAssignClick = async ()=>{
     const payload = {
@@ -59,6 +42,7 @@ const FacultyCourseAssignment = () => {
         console.log(err);
     })
   }
+  
   return (
     <div className="p-4">
       <ToastContainer />
@@ -76,7 +60,7 @@ const FacultyCourseAssignment = () => {
             <div className="w-[200px]">
               <Select
                 label="Select Faculty"
-                options={faculty}
+                options={facultyOptions}
                 isClearable
                 value={selectedFaculty}
                 onChange={(value) => setSelectedFaculty(value)}
@@ -85,7 +69,7 @@ const FacultyCourseAssignment = () => {
             <div className="w-[200px]">
               <Select
                 label="Select Course"
-                options={courses}
+                options={courseOptions}
                 isClearable
                 isMulti
                 closeMenuOnSelect={false}

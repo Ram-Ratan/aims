@@ -38,10 +38,8 @@ const FacultyGrade = () => {
 
   //fetching exam type
   const {data:exam, isLoading:examLoading, isError: examError} = useGetExam();
-
   // fetching assigned course for faculty
   const {data:course} = useGetCourseById();
-
   //fetching all registered users
   const {data:studentsByCourse,isLoading:studentLoading, isError: studentError} = useGetStudentByCourse({courseId: selectedCourse?.courseId});
   
@@ -51,14 +49,6 @@ const FacultyGrade = () => {
       setRegisteredStudent(formatData(studentsByCourse));
     }
   },[selectedCourse])
-
-  // if(studentLoading){
-  //   return <h2>Student data is loading</h2>
-  // }
-  // if(studentError){
-  //   return <h2>Error while fetching student data</h2>
-  // }
-
 
   //select options
   const examOptions = exam?.map((exam) => {
