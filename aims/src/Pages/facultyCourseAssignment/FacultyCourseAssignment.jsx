@@ -11,6 +11,7 @@ const FacultyCourseAssignment = () => {
   const [courses, setCourses] = useState(null);
   const [selectedFaculty, setSelectedFaculty] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState([]);
+  
   useEffect(() => {
     getAllFaculty()
       .then((res) => {

@@ -51,13 +51,13 @@ const FacultyGrade = () => {
       setRegisteredStudent(formatData(studentsByCourse));
     }
   },[selectedCourse])
-  
-  if(studentLoading){
-    return <h2>Student data is loading</h2>
-  }
-  if(studentError){
-    return <h2>Error while fetching student data</h2>
-  }
+
+  // if(studentLoading){
+  //   return <h2>Student data is loading</h2>
+  // }
+  // if(studentError){
+  //   return <h2>Error while fetching student data</h2>
+  // }
 
 
   //select options

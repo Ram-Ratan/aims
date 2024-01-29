@@ -13,59 +13,20 @@ import { getStudent } from "../../apiClient/personalDetails";
 import { CheckBoxProgram } from "../../components/input/Input";
 import TickIcon from "../../assets/svg/TickIcon";
 import ReRegister from "./reRegister/ReRegister";
+import { useGetBranch, useGetCourseRegisterdById, useGetCourses, useGetSemester } from "../../query/courseRegistration/courseRegistration";
 
 const CourseRegistration = () => {
-  const [courses, setCourses] = useState([]);
-  const [branches, setBranches] = useState([]);
-  const [sem, setSem] = useState([]);
+  const {data:sem, isLoading: semLoading, isError: semError} = useGetSemester();
+  const {data:branches, isLoading: branchLoading, isError: branchError} = useGetBranch();
+  const {data: courseRegistered, isLoading: isCourseRegisteredLoading} = useGetCourseRegisterdById();
   const [selectedSem, setSelectedSem] = useState(null);
   const [selectedBranch, setSelectedBranch] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState([]);
+  const {data:courses} = useGetCourses({semesterId: selectedSem?.id, branchId: selectedBranch?.id})
   const navigate = useNavigate();
-  const [isRegistered, setIsRegistered] = useState(null);
 
 
-  useEffect(() => {
-    getCourseRegisteredById()
-      .then((res) => {
-        setIsRegistered(res?.courseRegistered?.length !== 0);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  useEffect(() => {
-    getCourses({ semesterId: selectedSem?.id, branchId: selectedBranch?.id })
-      .then((res) => {
-        setCourses(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [selectedSem, selectedBranch]);
-
-  useEffect(() => {
-    getBranch()
-      .then((res) => {
-        setBranches(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  useEffect(() => {
-    getSem()
-      .then((res) => {
-        setSem(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  const branchOptions = branches.map((branch) => {
+  const branchOptions = branches?.map((branch) => {
     return {
       label: branch?.name,
       value: branch?.id,
@@ -73,7 +34,7 @@ const CourseRegistration = () => {
     };
   });
 
-  const semOptions = sem.map((sem) => {
+  const semOptions = sem?.map((sem) => {
     return {
       label: sem?.sem,
       value: sem?.id,
@@ -108,11 +69,19 @@ const CourseRegistration = () => {
     }
   };
 
+  if(semLoading || branchLoading){
+    return <h2>Data is being fetched</h2>
+  }
+  if(semError || branchError){
+    return <h2>Error in fetching data</h2>
+  }
+
+  
   return (
     <div>
-      {isRegistered != null && (
+      {courseRegistered != null && (
         <div>
-          {isRegistered ? (
+          {courseRegistered.length > 0 ? (
             <ReRegister />
           ) : (
             <div className="flex w-full h-full p-4 flex-col">
