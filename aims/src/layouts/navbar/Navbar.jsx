@@ -92,7 +92,6 @@ function Navbar() {
   const user = useSelector((state)=> state.user.user);
   const isAuthenticated = useSelector((state)=> state.user.isAuthenticated);
 
-
   return (
     <nav className="bg-gray-50 p-4 h-screen w-52 overflow-y-auto fixed top-14">
       <div>

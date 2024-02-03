@@ -13,7 +13,7 @@ const FacultyCourseAssignment = () => {
   const {data:faculty} = useGetAllFaculty();
   const {data:courses} = useGetAllCourses();
 
-  const facultyOptions = faculty?.map((faculty)=>{
+  const facultyOptions = faculty?.map((faculty) => {
     return {
       label: faculty?.fullName,
       value: faculty?.id,

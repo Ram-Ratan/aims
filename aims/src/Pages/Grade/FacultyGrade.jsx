@@ -17,12 +17,9 @@ import { isError } from "react-query";
 
 
 const FacultyGrade = () => {
-  //const [exam, setExam] = useState([]);
-  //const [course, setCourse] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [selectedExam, setSelectedExam] = useState(null);
   const [isModal, setIsModal] = useState(false);
-
   const [registeredStudent, setRegisteredStudent] = useState([]);
 
   const formatData = (data) => {
@@ -41,14 +38,14 @@ const FacultyGrade = () => {
   // fetching assigned course for faculty
   const {data:course} = useGetCourseById();
   //fetching all registered users
-  const {data:studentsByCourse,isLoading:studentLoading, isError: studentError} = useGetStudentByCourse({courseId: selectedCourse?.courseId});
+  const {data:studentsByCourse,isLoading:studentLoading, isFetching: studentFetching, isError: studentError} = useGetStudentByCourse({courseId: selectedCourse?.courseId});
   
   useEffect(()=>{
     console.log('course data',studentsByCourse);
     if(studentsByCourse){
       setRegisteredStudent(formatData(studentsByCourse));
     }
-  },[selectedCourse])
+  },[studentFetching])
 
   //select options
   const examOptions = exam?.map((exam) => {
@@ -214,7 +211,7 @@ const FacultyGrade = () => {
       </div>
       {isModal && (
         <ModalPopup
-          title="Attendance of This date is already marked. Do You want to update?"
+          title="Marks of This Course and Exam is already marked. Do You want to update?"
           body={
             <div className="p-5 pt-0">
               <div className="mt-3 flex justify-center">
