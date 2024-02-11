@@ -209,7 +209,7 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
                     </th>
                   ))}
                 </tr>
-              </thead>
+              </thead> 
               <tbody>
                 {registeredStudent?.map((row, rowIndex) => (
                   <tr key={row.rollNo}>

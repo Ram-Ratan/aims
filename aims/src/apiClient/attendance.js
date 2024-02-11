@@ -38,3 +38,15 @@ export const getCourseAssignedById = async (payload) => {
   const response = await api.get(url);
   return response?.data;
 };
+
+export const getClassType = async () => {
+  let url = `/attendance/get-class-type`;
+  const response = await api.get(url);
+  return response?.data;
+}
+
+export const getClassCategory = async () => {
+  let url = `attendance/get-class-category`
+  const response = await api.get(url);
+  return response?.data;
+}

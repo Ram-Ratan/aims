@@ -14,7 +14,7 @@ import StudentAttendance from "./studentAttendance.jsx/StudentAttendance";
 import FacultyAttendance from "./facultyAttendance.jsx/FacultyAttendance";
 import Tabs from "../../components/tabs/Tabs";
 import FacultyViewAttendance from "./facultyViewAttendance/FacultyViewAttendance";
-import { getCourseAssignedById } from "../../apiClient/attendance";
+import { getClassCategory, getClassType, getCourseAssignedById } from "../../apiClient/attendance";
 import { useSelector } from "react-redux";
 
   const tabs = [
@@ -35,11 +35,33 @@ const Attendance = () => {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-
+  const [classType, setClassType] = useState([]);
+  const [selectedClassType, setSelectedClassType] = useState(null);
+  const [classCategory, setClassCategory] = useState([]);
+  const [selectedClassCategory, setSelectedClassCategory] = useState(null);
 
   // const { data:user } = useGetUser();
   const user = useSelector((state) => state.user.user);
 
+
+  useEffect(()=> {
+    getClassType().then((res) => {
+      console.log('class response',res);
+      setClassType(res);
+      console.log('class',classType);
+    }).catch((error)=>{
+      console.log(error);
+    })
+  },[])
+
+  useEffect(() => {
+    getClassCategory().then((res) => {
+      console.log('class category response', res);
+      setClassCategory(res);
+    }).catch((error) => {
+      console.log(error);
+    })
+  },[])
 
   useEffect(() => {
     if (user?.role === "STUDENT") {
@@ -63,7 +85,21 @@ const Attendance = () => {
   }, [user?.role]);
 
 
+  const classTypeOptions = classType?.map((classType) => {
+    return {
+      label: classType,
+      value: classType,
+      ...classType
+    }
+  })
 
+  const classCategoryOptions = classCategory?.map((classCtg) => {
+    return {
+      label: classCtg,
+      value: classCtg,
+      ...classCtg
+    }
+  })
 
   const courseOptions = course?.map((course) => {
     return {
@@ -96,7 +132,7 @@ const Attendance = () => {
           <div className="flex flex-col gap-2">
             <div>
               <div className="flex gap-4">
-                <div className="min-w-[200px]">
+                <div className="min-w-[160px]">
                   <Select
                     label="Select Course"
                     className="flex flex-col"
@@ -112,7 +148,7 @@ const Attendance = () => {
                     required
                   />
                 </div>
-                <div className="min-w-[200px]">
+                <div className="min-w-[160px]">
                   {user?.role === "STUDENT" ? (
                     <DatePicker
                       label="Select Date Range"
@@ -134,6 +170,38 @@ const Attendance = () => {
                       }}
                     />
                   )}
+                </div>
+                <div className="min-w-[160px]">
+                  <Select
+                    label="Select Class"
+                    className="flex flex-col"
+                    options={classTypeOptions}
+                    value={selectedClassType}
+                    onChange={(e) => {
+                      setSelectedClassType(e);
+                    }}
+                    isClearable
+                    onClear={() => {
+                      setSelectedClassType(null);
+                    }}
+                    required
+                  />
+                </div>
+                <div className="min-w-[160px]">
+                  <Select
+                    label="Class Category"
+                    className="flex flex-col"
+                    options={classCategoryOptions}
+                    value={selectedClassCategory}
+                    onChange={(e) => {
+                      setSelectedClassCategory(e);
+                    }}
+                    isClearable
+                    onClear={() => {
+                      setSelectedClassCategory(null);
+                    }}
+                    required
+                  />
                 </div>
               </div>
             </div>
