@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getExam, getMarks } from "../../apiClient/marks";
+import { getExam, getMarks, getExamType } from "../../apiClient/marks";
 import { getStudentByCourse, getCourseAssignedById } from "../../apiClient/attendance";
 
 export const useGetExam = () => {
@@ -9,14 +9,22 @@ export const useGetExam = () => {
     })
 }
 
-export const useGetMarks = ({examId}) => {
-    console.log('marks id ',examId);
-    return useQuery(["getmarks",examId],async ()=>{
-        const res = await getMarks({examId}); 
+export const useGetExamType = () => {
+    return useQuery("getExamType", async () => {
+        const response = await getExamType();
+        console.log('exam type response',response);
+        return response?.data;
+    })
+}
+
+export const useGetMarks = ({examCode, examType}) => {
+    console.log('exam id ',examCode, examType);
+    return useQuery(["getmarks",examCode],async ()=>{
+        const res = await getMarks({examCode,examType}); 
         console.log('response',res);
         return res?.data; 
     },{
-        enabled: examId?true:false
+        enabled: (examCode && examType) ? true : false
     })
 }
 
@@ -28,7 +36,7 @@ export const useGetCourseById = () => {
 }
 
 export const useGetStudentByCourse = ({courseId}) => {
-    console.log('courseId',courseId);
+    //console.log('courseId',courseId);
     return useQuery(["getstudentbycourse",courseId], async () => {
         try {
             const response = await getStudentByCourse({courseId});

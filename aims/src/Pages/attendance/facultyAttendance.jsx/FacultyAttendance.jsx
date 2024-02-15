@@ -14,7 +14,10 @@ import ModalPopup from "../../../layouts/modalPopUp/ModalPopUp";
 import { showErrorToastMessage, showToastMessage } from "../../utils/utils";
 import { useGetStudentByCourse } from "../../../query/attendance/attendance";
 
-const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
+const FacultyAttendance = ({ selectedCourse, selectedDate, selectedClassType, selectedClassCategory }) => {
+  // console.log('selected date',selectedDate);
+  // console.log('payload of attendance class type',selectedClassType);
+  // console.log('payload of attendance category',selectedClassCategory);
   const attendanceOption = [
     {
       label: "P",
@@ -128,8 +131,11 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
     try {
       const viewPayload = {
         courseId: selectedCourse?.courseId,
+        classType: selectedClassCategory?.value,
+        attendanceType: selectedClassType?.value,
         date: selectedDate,
       };
+      console.log('payload',viewPayload);
       const res = await viewAttendanceByCourseAndDate(viewPayload);
       if (res.length) {
         setIsModal(true);
@@ -144,6 +150,8 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
   const markNewAttendance = async () => {
     const payload = {
       courseId: selectedCourse?.courseId,
+      classType: selectedClassCategory?.value,
+      attendanceType: selectedClassType?.value,
       attendance: registeredStudent?.map((student) => {
         return {
           id: student?.studentId,
@@ -164,6 +172,8 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
   const handleUpdateAttendance = async () => {
     const payload = {
       courseId: selectedCourse?.courseId,
+      classType: selectedClassCategory?.value,
+      attendanceType: selectedClassType?.value,
       attendance: registeredStudent?.map((student) => {
         return {
           id: student?.studentId,
@@ -172,6 +182,7 @@ const FacultyAttendance = ({ selectedCourse, selectedDate }) => {
       }),
       date: selectedDate,
     };
+    
     await updateAttendance(payload)
       .then((res) => {
         showToastMessage("Attendance Updated Successfully!");

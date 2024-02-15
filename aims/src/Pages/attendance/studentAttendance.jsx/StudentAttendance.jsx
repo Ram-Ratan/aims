@@ -6,8 +6,8 @@ import { formatDate } from '../../utils/utils';
 
 
 
-const StudentAttendance = ({selectedCourse, startDate, endDate}) => {
-
+const StudentAttendance = ({ selectedCourse, startDate, endDate, selectedClassType, selectedClassCategory }) => {
+  console.log(selectedClassCategory, selectedClassType);
 
   const [attendanceData, setAttendanceData] = useState(null);
 
@@ -51,6 +51,8 @@ const StudentAttendance = ({selectedCourse, startDate, endDate}) => {
         courseId: selectedCourse?.courseId,
         startDate: startDate,
         endDate: endDate,
+        classType: selectedClassCategory?.value,
+        attendanceType: selectedClassType?.value,
       };
       attendanceByCourseAndDate(payload)
         .then((res) => {

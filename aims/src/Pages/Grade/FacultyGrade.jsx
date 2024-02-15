@@ -12,7 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { showToastMessage, showErrorToastMessage } from "../utils/utils";
 import ModalPopup from "../../layouts/modalPopUp/ModalPopUp";
-import { useGetExam, useGetCourseById, useGetStudentByCourse } from "../../query/grade/grade";
+import { useGetExam, useGetCourseById, useGetStudentByCourse, useGetExamType } from "../../query/grade/grade";
 import { isError } from "react-query";
 
 
@@ -21,6 +21,7 @@ const FacultyGrade = () => {
   const [selectedExam, setSelectedExam] = useState(null);
   const [isModal, setIsModal] = useState(false);
   const [registeredStudent, setRegisteredStudent] = useState([]);
+  const [selectedExamType, setSelectedExamType] = useState(null);
 
   const formatData = (data) => {
     return data?.map((student) => {
@@ -39,7 +40,8 @@ const FacultyGrade = () => {
   const {data:course} = useGetCourseById();
   //fetching all registered users
   const {data:studentsByCourse,isLoading:studentLoading, isFetching: studentFetching, isError: studentError} = useGetStudentByCourse({courseId: selectedCourse?.courseId});
-  
+  const {data: examType, isLoading: examTypeLoading, isError: examTypeError } = useGetExamType();
+
   useEffect(()=>{
     console.log('course data',studentsByCourse);
     if(studentsByCourse){
@@ -50,11 +52,19 @@ const FacultyGrade = () => {
   //select options
   const examOptions = exam?.map((exam) => {
     return {
-      label: exam?.code,
-      value: exam?.code,
+      label: exam,
+      value: exam,
       ...exam,
     };
   });
+
+  const examTypeOptions = examType?.map((examType) => {
+    return {
+        label:examType,
+        value: examType,
+        ...examType
+    }
+  })
 
   const courseOptions = course?.map((course) => {
     return {
@@ -67,9 +77,11 @@ const FacultyGrade = () => {
   const handleSubmitMarks = async () => {
     try {
       const viewPayload = {
-        examId: selectedExam.id,
         courseId: selectedCourse?.courseId,
+        examCode: selectedExam?.value,
+        examType: selectedExamType?.value,
       };
+      console.log('exam marks submited',viewPayload);
       const res = await getMarksByExamCourse(viewPayload);
       if (res.data.length) {
         setIsModal(true);
@@ -83,8 +95,9 @@ const FacultyGrade = () => {
 
   const handleNewMarks = async () => {
     const payload = {
-      examId: selectedExam.id,
       courseId: selectedCourse?.courseId,
+      examCode: selectedExam?.value,
+      examType: selectedExamType?.value,
       marks: registeredStudent?.map((student) => {
         return {
           studentId: student?.studentId,
@@ -93,6 +106,7 @@ const FacultyGrade = () => {
         };
       }),
     };
+    console.log('marks submit',payload);
     await submitMarks(payload)
       .then((res) => {
         showToastMessage("Marks uploaded Successfully!");
@@ -104,8 +118,9 @@ const FacultyGrade = () => {
 
   const handleUpdateMarks = async () => {
     const payload = {
-      examId: selectedExam.id,
       courseId: selectedCourse?.courseId,
+      examCode: selectedExam?.value,
+      examType: selectedExamType?.value,
       marks: registeredStudent?.map((student) => {
         return {
           studentId: student?.studentId,
@@ -157,9 +172,22 @@ const FacultyGrade = () => {
               }}
               isClearable
               onClear={() => {
-                selectedCourse(null);
+                setSelectedCourse(null);
               }}
               required
+            />
+          </div>
+          <div className="w-[200px]">
+            <Select
+              label="Exam Type"
+              options={examTypeOptions}
+              required={true}
+              value={selectedExamType}
+              onChange={(e) => setSelectedExamType(e)}
+              isClearable
+              onClear={() => {
+                setSelectedExamType(null);
+              }}
             />
           </div>
         </div>

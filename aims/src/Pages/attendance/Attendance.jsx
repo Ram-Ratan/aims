@@ -35,9 +35,9 @@ const Attendance = () => {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [classType, setClassType] = useState([]);
+  const [classType, setClassType] = useState(null);
   const [selectedClassType, setSelectedClassType] = useState(null);
-  const [classCategory, setClassCategory] = useState([]);
+  const [classCategory, setClassCategory] = useState(null);
   const [selectedClassCategory, setSelectedClassCategory] = useState(null);
 
   // const { data:user } = useGetUser();
@@ -46,9 +46,7 @@ const Attendance = () => {
 
   useEffect(()=> {
     getClassType().then((res) => {
-      console.log('class response',res);
       setClassType(res);
-      console.log('class',classType);
     }).catch((error)=>{
       console.log(error);
     })
@@ -56,7 +54,6 @@ const Attendance = () => {
 
   useEffect(() => {
     getClassCategory().then((res) => {
-      console.log('class category response', res);
       setClassCategory(res);
     }).catch((error) => {
       console.log(error);
@@ -178,6 +175,7 @@ const Attendance = () => {
                     options={classTypeOptions}
                     value={selectedClassType}
                     onChange={(e) => {
+                      //console.log('event handler',e);
                       setSelectedClassType(e);
                     }}
                     isClearable
@@ -194,6 +192,7 @@ const Attendance = () => {
                     options={classCategoryOptions}
                     value={selectedClassCategory}
                     onChange={(e) => {
+                      //console.log('event handler',e);
                       setSelectedClassCategory(e);
                     }}
                     isClearable
@@ -212,6 +211,8 @@ const Attendance = () => {
               selectedCourse={selectedCourse}
               startDate={startDate}
               endDate={endDate}
+              selectedClassType={selectedClassType}
+              selectedClassCategory={selectedClassCategory}
             />
           )}
           {user?.role === "FACULTY" && (
@@ -227,6 +228,8 @@ const Attendance = () => {
                 <FacultyAttendance
                   selectedCourse={selectedCourse}
                   selectedDate={selectedDate}
+                  selectedClassType={selectedClassType}
+                  selectedClassCategory={selectedClassCategory}
                 />
               ) : (
                 <div>
